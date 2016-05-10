@@ -1,0 +1,80 @@
+<html>
+<head>
+	<script type="text/javascript">
+		function change() {
+			var box = document.getElementById("box");
+			box.style.left =( box.offsetLeft + 100) + "px";
+		}
+	</script>
+	<style>
+		div#box{
+			background-color:#ccc;
+			width:50px;
+			height:50px;
+			position:relative;
+		}
+	</style>
+</head>
+<body>
+	<div id="box" onclick="change()"></div>
+</body>
+</html>
+
+<!--<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+<header>헤더</header>
+<script>
+	function change() {
+		var prev = document.getElementById("prev");
+		var first = document.getElementById("first");
+		var sec = document.getElementById("sec");
+		
+		prev.s
+	}
+</script>
+</head>
+<body>
+	<div class="row" align="center" style="background-image:url(images/_beach.jpg); height:300px">
+		<h2>훌쩍 떠난 정선여행</h2>
+		<h5>2016.1.13 ~ 2016.1.15</h5>
+		<h6>User1 posted on 2016.2.1</h6>
+		<input type="button" size="20px" value="이미지1" /> <input type="button"
+			size="20px" value="이미지2" /> <input type="button" size="20px"
+			value="이미지3" /> <input type="button" size="20px" value="이미지4" /> <input
+			type="button" size="20px" value="이미지5" />
+	</div>
+	<div class="row" style="margin-top:50px;">
+		<div class="col-md-1" id="prev" style="margin-right: 20px">
+			<button style="width: 20px; height: 20px; background-image:url(images/glyphicons-211-arrow-left.png)"></button>
+		</div>
+		<form class="col-md-4 form-horizontal">
+			<div class="form-group" style="margin-right: 20px; background-image:url(images/theme1.JPG); height:200px"></div>
+			<div class="form-group" style="background-image:url(images/theme2.JPG); height:200px"></div>
+			<div class="form-group">
+				<h2>본문3</h2>
+			</div>
+			<div class="form-group">
+				<h2>본문4</h2>
+			</div>
+			<div class="form-group">
+				<h2>본문4</h2>
+			</div>
+			<div class="form-group">
+				<h2>본문4</h2>
+			</div>
+			<div class="form-group">
+				<h2>본문4</h2>
+			</div>
+		</form>
+		<div class="col-md-3" id="first" style="margin-right: 20px; background-image:url(images/_window.jpg); height: 200px">
+		</div>
+		<div class="col-md-3" id="sec" style="background-image:url(images/bus_map.jpg); height: 200px">
+			<button onClick="change()" style="width: 20px; height: 20px; float:right; background-image:url(images/glyphicons-212-arrow-right.png);"></button>
+		</div>
+	</div>
+</body>
+</html>-->
