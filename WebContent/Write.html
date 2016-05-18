@@ -21,17 +21,38 @@
 		</div>
 		<hr/>
 		<!-- 하단 작성할 내용 부분 -->
-		<div class="form-inline">
-			<div class="form-group form-horizontal">
-				<div class="form-group">
-					<textarea name="theme" cols="50" rows="10">내용을 작성해 주세요.</textarea>
+		<div class="row">
+			<div class="form-horizontal col-md-4 ">
+				<div class="form-group form-group-lg">
+					<textarea class="form-control" rows="5" name="theme">내용을 작성해 주세요.</textarea>
 				</div>
-				<div class="form-group">
-					<button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>		
+				<div class="form-group"> <!-- 테마 추가 버튼(아래쪽) -->
+					<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>		
+				</div>
+				<div class="form-group form-group-lg">
+					<textarea class="form-control" rows="5" name="theme">내용을 작성해 주세요.</textarea>
 				</div>
 			</div>
-			<div class="form-group">
-				<button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+			<div class="col-md-1">	<!-- 부가내용 추가 버튼(오른쪽) -->
+				<button type="button" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+			</div>
+			<div class="col-md-6" style="border: 1px black solid">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn">사진</button>
+					<button type="button" class="btn">인스타</button>
+					<button type="button" class="btn">페이스북</button>
+					<button type="button" class="btn">지도</button>
+					<button type="button" class="btn">기타</button>
+				</div>
+				<h3><strong>Google Maps</strong></h3>
+				<div class="input-group">
+					<input type="search" class="form-control" placeholder="지역을 입력하세요" />
+					<span class="input-group-btn">
+						<button class="btn" type="button">Search</button>
+					</span>
+				</div>
+				<img src="images/_beach.jpg"  class="img-thumbnail" />
+				<button type="button" class="btn btn-lg" value="확인"></button>
 			</div>
 		</div>
 	</div>
