@@ -4,6 +4,14 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+<Script>
+	function addTheme() {
+		var divTheme = document.getElementById("addTheme");
+		var div = document.createElement("div");
+		div.innerHTML = '<div class="form-group form-group-lg"><textarea class="form-control" rows="5" name="theme">내용을 작성해 주세요.</textarea></div>';
+		divTheme.appendChild(div); 
+	}
+</Script>
 </head>
 <body>
 	<div class="row" align="center">
@@ -27,28 +35,30 @@
 					<textarea class="form-control" rows="5" name="theme">내용을 작성해 주세요.</textarea>
 				</div>
 				<div class="form-group"> <!-- 테마 추가 버튼(아래쪽) -->
-					<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>		
+					<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block" onClick="addTheme()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>		
 				</div>
-				<div class="form-group form-group-lg">
-					<textarea class="form-control" rows="5" name="theme">내용을 작성해 주세요.</textarea>
+				<div id="addTheme">
+					<div class="form-group form-group-lg">
+						<textarea class="form-control" rows="5" name="theme">내용을 작성해 주세요.</textarea>
+					</div>
 				</div>
 			</div>
 			<div class="col-md-1">	<!-- 부가내용 추가 버튼(오른쪽) -->
 				<button type="button" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 			</div>
 			<div class="col-md-6" style="border: 1px black solid">
-				<div class="btn-group" role="group">
-					<button type="button" class="btn">사진</button>
-					<button type="button" class="btn">인스타</button>
-					<button type="button" class="btn">페이스북</button>
-					<button type="button" class="btn">지도</button>
-					<button type="button" class="btn">기타</button>
+				<div class="btn-group btn-block btn-group-justified" role="group">
+					<button type="button" class="btn btn-lg btn-block" role="group"><span class="glyphicon glyphicon-picture"></span></button>
+					<button type="button" class="btn btn-lg" role="group"><span class="glyphicon glyphicon-camera"></span></button>
+					<button type="button" class="btn btn-lg" role="group"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+					<button type="button" class="btn btn-lg" role="group"><span class="glyphicon glyphicon-map-marker"></span></button>
+					<button type="button" class="btn btn-lg" role="group"><span class="glyphicon glyphicon-option-horizontal"></span></button>
 				</div>
 				<h3><strong>Google Maps</strong></h3>
 				<div class="input-group">
 					<input type="search" class="form-control" placeholder="지역을 입력하세요" />
 					<span class="input-group-btn">
-						<button class="btn" type="button">Search</button>
+						<button class="btn" type="button"><span class="glyphicon glyphicon-search"></span></button>
 					</span>
 				</div>
 				<img src="images/_beach.jpg"  class="img-thumbnail" />
