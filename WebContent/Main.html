@@ -1,94 +1,84 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="EUC-KR">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>부트스트랩 101 템플릿</title>
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<style type="text/css">
-@font-face {
-   font-family: 'Nanum'; /* 폰트 패밀리 이름 주기*/
-   src: url('font/NANUMBARUNGOTHIC.TTF'); /*폰트 파일 주소*/
-}
-
-.text_box_mainTitle {
-   filter: Alpha(opacity : 50);
-   font-family: Nanum;
-   color: #FFFFFF;
-   overflow: hidden;
-   text-align: center;
-   padding-top: 15px;
-   padding-bottom: 15px;
-   background-color: #000000;
-   width: 500px;
-   hegiht: 50px;
-   font-size: 30pt;
-   opacity: 0.8;
-   position:relative;
-   margin-top:150px;left:50%;margin-left:-250px;
-}
-
-.text_box_subTitle {
-   position: relative;
-   filter: Alpha(opacity : 50);
-   font-family: Nanum;
-   color: #FFFFFF;
-   overflow: hidden;
-   text-align: center;
-   padding-top: 15px;
-   padding-bottom: 15px;
-   background-color: #000000;
-   width: 200px; hegiht : 50px; font-size : 12pt;
-   opacity: 0.8;
-   hegiht: 50px;
-   font-size: 12pt;
-   
-}
-
-.text_box_menu {
-   position: relative;
-   filter: Alpha(opacity : 50);
-   font-family: Nanum;
-   color: #FFFFFF;
-   overflow: hidden;
-   text-align: center;
-   padding-top: 15px;
-   padding-bottom: 15px;
-   background-color: #C239F0;
-   width: 250px;
-   hegiht: 300px;
-   font-size: 15pt;
-   opacity: 0.9;
-}
-
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+<title>Insert title here</title>
+<style>
+	.main {
+		background-image: url("images/main.jpg");
+		background-repeat: no-repeat;
+		background-size: cover;
+		width: 1400px;
+		height: 500px;
+	}
+	.main_title {
+		font-family: Nanum;
+		color: #FFFFFF;
+		background-color: #000000;
+		margin-top: 50px;
+	}
+	.main_tag {
+		font-family: Nanum;
+   		color: #FFFFFF;
+   		background-color: #000000;
+	}
+	.main_link_div {
+		margin-top: 50px;
+	}
+	.main_link {
+		margin-top: 30px;
+		font-family: Nanum;
+   		color: #FFFFFF;
+		background-color: #C239F0;
+		height: 100px;
+		padding-top: 30px;
+	}
 </style>
 </head>
 <body>
-   <div style="margin-top: 10px">
-
-      <div class="row" >
-         <div class="row col-xs-6 col-sm-6 col-md-6 col-lg-6 img-responsive"
-            style="background-image: url('image/mainImage.png'); width: 100%; height: 600px">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text_box_mainTitle">꽃놀이,다녀오셨나요?</div>
-            <div style="position:relative; margin-top:300px ; left:50%; margin-left:-320px">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text_box_subTitle" style="margin-right:20px;">#진해벚꽃군항제</div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text_box_subTitle" style="margin-right:20px">#경주보문단지</div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text_box_subTitle">#강릉경포호수</div>
-            </div>
-            <div style="position:relative;margin-top:400px;left:50%;margin-left:-275px">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text_box_menu" style="margin-right:50px"><a href="Search.html">아직 안다녀왔으니<br>정보 얻으러 가기</a></div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text_box_menu"><a href="Write.html">다녀왔으니<br>여행로그로 자랑하러 가기</a></div>
-            </div>
-         </div>
-         <div>
-            <img class="img-responsive"  style="margin-top : 50px;margin-left:100px" src="image/result.PNG" />
-            <img class="img-responsive"  style="margin-top : 50px;margin-left:100px" src="image/result.PNG" />
-            <img class="img-responsive"  style="margin-top : 50px;margin-left:100px" src="image/result.PNG"  />
-            <img class="img-responsive"  style="margin-top : 50px;margin-left:100px" src="image/result.PNG"  />
-
-         </div>
-      </div>
-   </div>
+	<div class="container">
+		<div class="page-header">
+			header
+		</div>
+		<div class="main row">
+			<div class="main_title col-lg-6 col-lg-offset-3 text-center">
+				<h2><strong>꽃놀이, 다녀오셨나요?</strong></h2>
+			</div>
+			<div class="main_tag col-lg-8 col-lg-offset-2 text-center">
+				<h2><small>#진해,#커플여행,#당일치기,#꽃눈이내리네,#사람반꽃반,#기차여행</small></h2>
+			</div>
+			<div class="main_link_div col-md-4 col-md-offset-2">
+				<a href="Search.html" class="main_link btn btn-default btn-lg">아직 안다녀왔으니 정보 얻으러 가기</a>
+			</div>
+			<div class="main_link_div col-md-4">
+				<a href="Write.html" class="main_link btn btn-default btn-lg">다녀왔으니 여행로그로 자랑하러 가기</a>
+			</div>
+		</div>
+		<br/><br/><br/><br/><br/>
+		<div class="row">
+			<div class="col-xs-8 col-md-3">
+				<a href="#" class="thumbnail"> <img src="images/_window.jpg" />
+					<a href="#" class="btn btn-default">#진해 군항제 여행기</a>
+				</a>
+			</div>
+			<div class="col-xs-6 col-md-3">
+				<a href="#" class="thumbnail"> <img src="images/_window.jpg" />
+					<a href="#" class="btn btn-default">#진해 군항제 여행기</a>
+				</a>
+			</div>
+			<div class="col-xs-6 col-md-3">
+				<a href="#" class="thumbnail"> <img src="images/_window.jpg" />
+					<a href="#" class="btn btn-default">#진해 군항제 여행기</a>
+				</a>
+			</div>
+			<div class="col-xs-6 col-md-3">
+				<a href="#" class="thumbnail"> <img src="images/_window.jpg" />
+					<a href="#" class="btn btn-default">#진해 군항제 여행기</a>
+				</a>
+			</div>
+		</div>	
+	</div>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
