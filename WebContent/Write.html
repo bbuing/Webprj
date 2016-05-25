@@ -8,10 +8,20 @@
 	function addTheme() {
 		var divTheme = document.getElementById("addTheme");
 		var div = document.createElement("div");
-		div.innerHTML = '<div class="form-group form-group-lg text-right"><textarea class="form-control" rows="5" name="theme" placeholder="내용을 작성해 주세요."></textarea><button type="button" class="btn btn-default" name="delete_theme" value="삭제"><span class="glyphicon glyphicon-trash"></span></button></div>';
+		div.innerHTML = '<div class="form-group form-group-lg text-right">' + 
+		'<textarea class="form-control" rows="5" name="theme" placeholder="내용을 작성해 주세요."></textarea>' + 
+		'<button type="button" class="btn btn-default" name="delete_theme" value="삭제"><span class="glyphicon glyphicon-trash"></span></button></div>';
 		divTheme.appendChild(div); 
 	}
+	function removeTheme() {
+		
+	}
 </Script>
+<script type="text/javascript">
+                        try {document.execCommand('BackgroundImageCache', false, true);} catch(e) {}
+</script>
+<script type="text/javascript" src="http://openapi.map.naver.com/openapi/v2/maps.js?clientId=0WHH0daM0No75W5iZoZC"></script>
+
 </head>
 <body>
 	<div class="container">
@@ -24,7 +34,8 @@
 			<div class="col-md-12" align="center">
 				<input class="form-control input-lg" type="text" name="title" placeholder="타이틀을 넣어주세요" /><br/>
 				<input class="form-control input-lg" type="text" name="date" placeholder="여행 기간 입력" /><br/><br/>
-				<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-picture"></span></input>
+				<input type="file" id="title_img" style="display:none"/>
+				<button type="button" class="btn btn-info" onClick="document.getElementById('title_img').click();"><span class="glyphicon glyphicon-picture"></span></button>
 			</div>
 		</div>
 		<hr/>
@@ -44,23 +55,22 @@
 			</div>
 			<div class="col-md-6" style="border: 1px black solid">
 				<div class="btn-group btn-group-justified" >
-					<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span></a>
+					<input type="file" id="card_img" style="display: none"/>
+					<a href="#" class="btn btn-default" onclick="document.getElementById('card_img').click();"><span class="glyphicon glyphicon-picture"></span></a>
 					<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-camera"></span></a>
 					<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span></a>
-					<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-map-marker"></span></a>
+					<a href="#" class="btn btn-default active"><span class="glyphicon glyphicon-map-marker"></span></a>
 					<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-option-horizontal"></span></a>
 				</div>
-				<h3><strong>Google Maps</strong></h3>
+				<h3><strong>Naver Maps</strong></h3>
 				<div class="input-group">
 					<input type="search" class="form-control" placeholder="지역을 입력하세요" />
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
 					</span>
 				</div>
-				<div class="text-right">				
-					<img src="images/_beach.jpg"  class="img-thumbnail" />
-					<button type="button" class="checkbtn btn btn-success" value="확인">확인</button>
-				</div>
+				<div id="map_div" style="border:1px solid #000; width:500px; height:300px; margin:20px;"></div>
+				<button type="button" class="checkbtn btn btn-success" value="확인">확인</button>
 			</div>
 		</div>
 		<div class="row" align="center">
@@ -68,7 +78,35 @@
 			<h1>푸터 부분 입니다.</h1>
 		</div>
 	</div>
+	<script>
+	var oPoint = new nhn.api.map.LatLng(37.5678732, 126.9830730); 
+	nhn.api.map.setDefaultPoint('LatLng');
+	oMap = new nhn.api.map.Map('map_div' ,{
+	                        point : oPoint,
+	                        zoom : 11,
+	                        enableWheelZoom : true,
+	                        enableDragPan : true,
+	                        enableDblClickZoom : false,
+	                        mapMode : 0,
+	                        activateTrafficMap : false,
+	                        activateBicycleMap : false,
+	                        minMaxLevel : [ 1, 14 ],
+	                        size : new nhn.api.map.Size(500, 300)
+	                });
+	var oSize = new nhn.api.map.Size(28, 37);
+	var oOffset = new nhn.api.map.Size(14, 37);
+	var oIcon = new nhn.api.map.Icon('http://static.naver.com/maps2/icons/pin_spot2.png', oSize, oOffset);
+	// - Draggable Marker 의 경우 Icon 인자는 Sprite Icon이 된다.
+	// - 따라서 Sprite Icon 을 사용하기 위해 기본적으로 사용되는 값을 지정한다.
+	// - Sprite Icon 을 사용하기 위해서 상세한 내용은 레퍼런스 페이지의 nhn.api.map.SpriteIcon 객체를 참조하면 된다.
 
+	var oMarker1 = new nhn.api.map.Marker(oIcon, { title : 'KH 아카데미' });  //마커 생성 
+	oMarker1.setPoint(oPoint); //마커 표시할 좌표 선택
+	oMap.addOverlay(oMarker1); //마커를 지도위에 표현 
+	var oLabel1 = new nhn.api.map.MarkerLabel(); // - 마커 라벨 선언. 
+	oMap.addOverlay(oLabel1); // - 마커 라벨 지도에 추가. 기본은 라벨이 보이지 않는 상태로 추가됨. 
+	oLabel1.setVisible(true, oMarker1); // 마커 라벨 보이기
+	</script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

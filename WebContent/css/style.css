@@ -1,0 +1,19 @@
+.h_box {
+  position: relative;
+  height: 150px;
+  display: block;
+  background: #f0f0f0;
+  margin: 0 20px 20px 20px;
+}
+
+.h_navbar_extended {
+  height : 300px
+}
+
+.h_notice {
+  margin-top: 8px;
+}
+
+.h_inner_container {
+  margin: 20px;
+}

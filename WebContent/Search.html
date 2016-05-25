@@ -4,6 +4,11 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+<style>
+.category {
+	margin-right: 40px;
+}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -14,25 +19,48 @@
 		<div class="row">
 			<div class="col-md-12 page-header">
 				<h3>
-					<span class="glyphicon glyphicon-search"></span> 상세 검색 <small>*모든 검색조건을 입력하지 않아도 됩니다. 원하는 조건만!</small>
+					<span class="glyphicon glyphicon-search"></span> 상세 검색 <small>*모든
+						검색조건을 입력하지 않아도 됩니다. 원하는 조건만!</small>
 				</h3>
-			</div>
-			<div class="col-md-8 form-inline">
-				<div class="form-group">
-					<label><h4>테마</h4></label>&nbsp;&nbsp;&nbsp;
-					<select name="theme" class="form-control">
-						<option value="couple">커플</option>
-						<option value="couple">가족</option>
-						<option value="couple">힐링</option>
-						<option value="couple">관광</option>
-					</select>
+				<div class="col-md-8 form-inline">
+					<div class="category form-group">
+						<label><h4>테마</h4></label>&nbsp;&nbsp;&nbsp; <select name="theme"
+							class="form-control">
+							<option value="couple">---</option>
+							<option value="couple">커플</option>
+							<option value="couple">가족</option>
+							<option value="couple">힐링</option>
+							<option value="couple">관광</option>
+						</select>
+					</div>
+					<div class="category form-group">
+						<label><h4>지역</h4></label>&nbsp;&nbsp;&nbsp; <select name="area"
+							class="form-control">
+							<option value="couple">---</option>
+							<option value="couple">인천,경기</option>
+							<option value="couple">전라도</option>
+							<option value="couple">경상도</option>
+							<option value="couple">강원도</option>
+						</select>
+					</div>
+					<div class="category form-group">
+						<label><h4>교통</h4></label>&nbsp;&nbsp;&nbsp; <select name="trans"
+							class="form-control">
+							<option value="couple">---</option>
+							<option value="couple">자동차</option>
+							<option value="couple">버스</option>
+							<option value="couple">기차</option>
+							<option value="couple">비행기</option>
+						</select>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-8 col-md-3">
-				<a href="#" class="thumbnail"> <img src="images/_window.jpg" />
-					<a href="#" class="btn btn-default">#진해 군항제 여행기</a>
+				<a href="View.html" class="thumbnail"> <img
+					src="images/_window.jpg" /> <a href="View.html"
+					class="btn btn-default">#진해 군항제 여행기</a>
 				</a>
 			</div>
 			<div class="col-xs-6 col-md-3">
@@ -72,7 +100,7 @@
 			</div>
 		</div>
 	</div>
-<script src="bootstrap/js/jquery-2.2.3.min.js"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/jquery-2.2.3.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
