@@ -8,13 +8,14 @@
 	function addTheme() {
 		var divTheme = document.getElementById("addTheme");
 		var div = document.createElement("div");
-		div.innerHTML = '<div class="form-group form-group-lg text-right">' + 
+		div.innerHTML = '<div id="theme_row" class="form-group form-group-lg text-right">' + 
 		'<textarea class="form-control" rows="5" name="theme" placeholder="내용을 작성해 주세요."></textarea>' + 
-		'<button type="button" class="btn btn-default" name="delete_theme" value="삭제"><span class="glyphicon glyphicon-trash"></span></button></div>';
+		'<button type="button" class="btn btn-default" name="delete_theme" value="삭제" onClick="removeTheme(this)"><span class="glyphicon glyphicon-trash"></span></button></div>';
 		divTheme.appendChild(div); 
 	}
-	function removeTheme() {
-		
+	function removeTheme(object) {
+			var index = $("#theme_row[name=delete_theme]").index(object);
+			$('#theme_row').eq(index).remove();
 	}
 </Script>
 <script type="text/javascript">
