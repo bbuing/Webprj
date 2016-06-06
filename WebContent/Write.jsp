@@ -1,3 +1,6 @@
+<%@page import="java.net.HttpURLConnection"%>
+<%@page import="java.net.URL"%>
+<%@ page contentType="text/html; charset=EUC-KR"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,9 +122,15 @@ $(document).ready(function(){
 		function() {
 			var $query = $("#search").val();
 			if($query != null) {
-				
-				var resp = "https://openapi.naver.com/v1/map/geocode?encoding=utf-8&coord=latlng&output=json&query=%EB%B6%88%EC%A0%95%EB%A1%9C%206";
-				alert(resp);
+				<%
+					URL mapXmlUrl = new URL("https://openapi.naver.com/v1/map/geocode?encoding=utf-8&coord=latlng&output=json&query=%EB%B6%88%EC%A0%95%EB%A1%9C%206");
+					HttpURLConnection urlConn = (HttpURLConnection)mapXmlUrl.openConnection();
+					urlConn.setDoOutput(true);
+					urlConn.setRequestMethod("POST");
+					
+					int len = urlConn.getContentLength();
+				%>
+				alert(<%= len%>);
 			}
 		}		
 	);
