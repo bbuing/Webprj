@@ -1,14 +1,19 @@
-<%@page import="java.net.HttpURLConnection"%>
-<%@page import="java.net.URL"%>
-<%@ page contentType="text/html; charset=EUC-KR"%>
+<%@page import="java.io.InputStreamReader"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.io.BufferedReader"%>
+<%@page import="org.apache.http.util.EntityUtils"%>
+<%@page import="org.apache.http.HttpEntity"%>
+<%@page import="org.apache.http.HttpResponse"%>
+<%@page import="org.apache.http.client.methods.HttpGet"%>
+<%@page import="org.apache.http.impl.client.HttpClientBuilder"%>
+<%@page import="org.apache.http.client.HttpClient"%>
+<%@ page contentType="text/html; charset=utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="utf-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
-<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 <script type="text/javascript" src="http://openapi.map.naver.com/openapi/v2/maps.js?clientId=0WHH0daM0No75W5iZoZC"></script>
 <Script>
 	function addTheme() {
@@ -22,7 +27,7 @@
 			'<button type="button" class="form-contorl btn btn-sm"><span class="glyphicon glyphicon-home"></span></button>'+
 			'<button type="button" class="form-contorl btn btn-sm"><span class="glyphicon glyphicon-send"></span></button></div></div>'+ 
 			'<div id="theme_row" class="form-group text-right">' + 
-			'<textarea class="form-control" rows="8" name="theme" placeholder="³»¿ëÀ» ÀÛ¼ºÇØ ÁÖ¼¼¿ä."></textarea>' + 
+			'<textarea class="form-control" rows="8" name="theme" placeholder="ë‚´ìš©ì„ ì‘ì„±í•´ ì£¼ì„¸ìš”."></textarea>' + 
 			'<button type="button" class="btn btn-default" onClick="removeTheme(this)"><span class="glyphicon glyphicon-trash"></span></button></div>'+
 			'</div>';
 		divTheme.appendChild(div); 
@@ -39,30 +44,21 @@
 <body>
 	<div class="container">
 		<div class="row" align="center">
-			<h1>Çì´õ ºÎºĞ ÀÔ´Ï´Ù.</h1>
+			<h1>í—¤ë” ë¶€ë¶„ ì…ë‹ˆë‹¤.</h1>
 			<hr/>
 		</div>
 		
-		<div class="multiple-items">
-		    <div><button type="button" class="form-control btn btn-sm"><span class="glyphicon glyphicon-plane"></span></button></div>
-		    <div><button type="button" class="form-control btn btn-sm"><span class="glyphicon glyphicon-plane"></span></button></div>
-		    <div><button type="button" class="form-control btn btn-sm"><span class="glyphicon glyphicon-plane"></span></button></div>
-		    <div><button type="button" class="form-control btn btn-sm"><span class="glyphicon glyphicon-plane"></span></button></div>
-		    <div><button type="button" class="form-control btn btn-sm"><span class="glyphicon glyphicon-plane"></span></button></div>
-		    <div><button type="button" class="form-control btn btn-sm"><span class="glyphicon glyphicon-plane"></span></button></div>
-	  	</div>
-		
-		<!-- Á¦¸ñ,¿©Çà±â°£À» ÀÛ¼ºÇÒ »ó´Ü ºÎºĞ -->
+		<!-- ì œëª©,ì—¬í–‰ê¸°ê°„ì„ ì‘ì„±í•  ìƒë‹¨ ë¶€ë¶„ -->
 		<div class="row" style="width: 100%">
 			<div class="col-md-12" align="center">
-				<input class="form-control input-lg" type="text" name="title" placeholder="Å¸ÀÌÆ²À» ³Ö¾îÁÖ¼¼¿ä" /><br/>
-				<input class="form-control input-lg" type="text" name="date" placeholder="¿©Çà ±â°£ ÀÔ·Â" /><br/><br/>
+				<input class="form-control input-lg" type="text" name="title" placeholder="íƒ€ì´í‹€ì„ ë„£ì–´ì£¼ì„¸ìš”" /><br/>
+				<input class="form-control input-lg" type="text" name="date" placeholder="ì—¬í–‰ ê¸°ê°„ ì…ë ¥" /><br/><br/>
 				<input type="file" id="title_img" style="display:none"/>
 				<button type="button" class="btn btn-info" onClick="document.getElementById('title_img').click();"><span class="glyphicon glyphicon-picture"></span></button>
 			</div>
 		</div>
 		<hr/>
-		<!-- ÇÏ´Ü ÀÛ¼ºÇÒ ³»¿ë ºÎºĞ -->
+		<!-- í•˜ë‹¨ ì‘ì„±í•  ë‚´ìš© ë¶€ë¶„ -->
 		<div class="row">
 			<div class="form-horizontal col-md-4 ">
 				<div class="form-inline">
@@ -74,14 +70,14 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<textarea class="form-control" rows="8" name="theme" placeholder="³»¿ëÀ» ÀÛ¼ºÇØ ÁÖ¼¼¿ä."></textarea>
+					<textarea class="form-control" rows="8" name="theme" placeholder="ë‚´ìš©ì„ ì‘ì„±í•´ ì£¼ì„¸ìš”."></textarea>
 				</div>
-				<div class="form-group"> <!-- Å×¸¶ Ãß°¡ ¹öÆ°(¾Æ·¡ÂÊ) -->
+				<div class="form-group"> <!-- í…Œë§ˆ ì¶”ê°€ ë²„íŠ¼(ì•„ë˜ìª½) -->
 					<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block" onClick="addTheme()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>		
 				</div>
 				<div id="addTheme"></div>
 			</div>
-			<div class="col-md-1" style="margin-top: 35px">	<!-- ºÎ°¡³»¿ë Ãß°¡ ¹öÆ°(¿À¸¥ÂÊ) -->
+			<div class="col-md-1" style="margin-top: 35px">	<!-- ë¶€ê°€ë‚´ìš© ì¶”ê°€ ë²„íŠ¼(ì˜¤ë¥¸ìª½) -->
 				<div style="height: 150px">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 				</div>
@@ -97,78 +93,39 @@
 				</div>
 				<h3><strong>Naver Maps</strong></h3>
 				<div class="input-group">
-					<input type="search" id="search" class="form-control" placeholder="Áö¿ªÀ» ÀÔ·ÂÇÏ¼¼¿ä" />
+					<input type="search" id="search" class="form-control" placeholder="ì§€ì—­ì„ ì…ë ¥í•˜ì„¸ìš”" />
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
 					</span>
 				</div>
 				<div id="map_div" style="border:1px solid #000; width:500px; height:300px; margin:20px;"></div>
-				<button type="button" id="searchBtn" class="checkbtn btn btn-success" value="È®ÀÎ">È®ÀÎ</button>
+				<button type="button" id="searchBtn" class="checkbtn btn btn-success" value="í™•ì¸">í™•ì¸</button>
 			</div>
 		</div>
 		<div class="row" align="center">
 			<hr/>
-			<h1>ÇªÅÍ ºÎºĞ ÀÔ´Ï´Ù.</h1>
+			<h1>í‘¸í„° ë¶€ë¶„ ì…ë‹ˆë‹¤.</h1>
 		</div>
 	</div>
 	
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
 <script>
 $(document).ready(function(){
 	$("#searchBtn").click(
 		function() {
 			var $query = $("#search").val();
 			if($query != null) {
-				<%
-					URL mapXmlUrl = new URL("https://openapi.naver.com/v1/map/geocode?encoding=utf-8&coord=latlng&output=json&query=%EB%B6%88%EC%A0%95%EB%A1%9C%206");
-					HttpURLConnection urlConn = (HttpURLConnection)mapXmlUrl.openConnection();
-					urlConn.setDoOutput(true);
-					urlConn.setRequestMethod("POST");
-					
-					int len = urlConn.getContentLength();
-				%>
-				alert(<%= len%>);
 			}
 		}		
 	);
-	$('.center').slick({
-		  centerMode: true,
-		  centerPadding: '60px',
-		  slidesToShow: 2,
-		  responsive: [
-		    {
-		      breakpoint: 768,
-		      settings: {
-		        arrows: false,
-		        centerMode: true,
-		        centerPadding: '40px',
-		        slidesToShow: 2
-		      }
-		    },
-		    {
-		      breakpoint: 480,
-		      settings: {
-		        arrows: false,
-		        centerMode: true,
-		        centerPadding: '40px',
-		        slidesToShow: 1
-		      }
-		    }
-		  ]
-		});
-	
-	$('.multiple-items').slick({
-		  infinite: true,
-		  slidesToShow: 3,
-		  slidesToScroll: 3
-		});
 });
 </script>
 	<script>
-	var oPoint = new nhn.api.map.LatLng(37.5678732, 126.9830730); 
+	// 37.5678732, 126.9830730
+	var oPoint = new nhn.api.map.LatLng(127.1052201, 37.3595193); 
 	nhn.api.map.setDefaultPoint('LatLng');
 	oMap = new nhn.api.map.Map('map_div' ,{
 	                        point : oPoint,
@@ -185,16 +142,16 @@ $(document).ready(function(){
 	var oSize = new nhn.api.map.Size(28, 37);
 	var oOffset = new nhn.api.map.Size(14, 37);
 	var oIcon = new nhn.api.map.Icon('http://static.naver.com/maps2/icons/pin_spot2.png', oSize, oOffset);
-	// - Draggable Marker ÀÇ °æ¿ì Icon ÀÎÀÚ´Â Sprite IconÀÌ µÈ´Ù.
-	// - µû¶ó¼­ Sprite Icon À» »ç¿ëÇÏ±â À§ÇØ ±âº»ÀûÀ¸·Î »ç¿ëµÇ´Â °ªÀ» ÁöÁ¤ÇÑ´Ù.
-	// - Sprite Icon À» »ç¿ëÇÏ±â À§ÇØ¼­ »ó¼¼ÇÑ ³»¿ëÀº ·¹ÆÛ·±½º ÆäÀÌÁöÀÇ nhn.api.map.SpriteIcon °´Ã¼¸¦ ÂüÁ¶ÇÏ¸é µÈ´Ù.
+	// - Draggable Marker ì˜ ê²½ìš° Icon ì¸ìëŠ” Sprite Iconì´ ëœë‹¤.
+	// - ë”°ë¼ì„œ Sprite Icon ì„ ì‚¬ìš©í•˜ê¸° ìœ„í•´ ê¸°ë³¸ì ìœ¼ë¡œ ì‚¬ìš©ë˜ëŠ” ê°’ì„ ì§€ì •í•œë‹¤.
+	// - Sprite Icon ì„ ì‚¬ìš©í•˜ê¸° ìœ„í•´ì„œ ìƒì„¸í•œ ë‚´ìš©ì€ ë ˆí¼ëŸ°ìŠ¤ í˜ì´ì§€ì˜ nhn.api.map.SpriteIcon ê°ì²´ë¥¼ ì°¸ì¡°í•˜ë©´ ëœë‹¤.
 
-	var oMarker1 = new nhn.api.map.Marker(oIcon, { title : 'KH ¾ÆÄ«µ¥¹Ì' });  //¸¶Ä¿ »ı¼º 
-	oMarker1.setPoint(oPoint); //¸¶Ä¿ Ç¥½ÃÇÒ ÁÂÇ¥ ¼±ÅÃ
-	oMap.addOverlay(oMarker1); //¸¶Ä¿¸¦ ÁöµµÀ§¿¡ Ç¥Çö 
-	var oLabel1 = new nhn.api.map.MarkerLabel(); // - ¸¶Ä¿ ¶óº§ ¼±¾ğ. 
-	oMap.addOverlay(oLabel1); // - ¸¶Ä¿ ¶óº§ Áöµµ¿¡ Ãß°¡. ±âº»Àº ¶óº§ÀÌ º¸ÀÌÁö ¾Ê´Â »óÅÂ·Î Ãß°¡µÊ. 
-	oLabel1.setVisible(true, oMarker1); // ¸¶Ä¿ ¶óº§ º¸ÀÌ±â
+	var oMarker1 = new nhn.api.map.Marker(oIcon, { title : 'KH ì•„ì¹´ë°ë¯¸' });  //ë§ˆì»¤ ìƒì„± 
+	oMarker1.setPoint(oPoint); //ë§ˆì»¤ í‘œì‹œí•  ì¢Œí‘œ ì„ íƒ
+	oMap.addOverlay(oMarker1); //ë§ˆì»¤ë¥¼ ì§€ë„ìœ„ì— í‘œí˜„ 
+	var oLabel1 = new nhn.api.map.MarkerLabel(); // - ë§ˆì»¤ ë¼ë²¨ ì„ ì–¸. 
+	oMap.addOverlay(oLabel1); // - ë§ˆì»¤ ë¼ë²¨ ì§€ë„ì— ì¶”ê°€. ê¸°ë³¸ì€ ë¼ë²¨ì´ ë³´ì´ì§€ ì•ŠëŠ” ìƒíƒœë¡œ ì¶”ê°€ë¨. 
+	oLabel1.setVisible(true, oMarker1); // ë§ˆì»¤ ë¼ë²¨ ë³´ì´ê¸°
 	</script>
 </body>
 </html>
