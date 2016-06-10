@@ -2,11 +2,6 @@
 <%@page import="java.io.InputStream"%>
 <%@page import="java.io.BufferedReader"%>
 <%@page import="org.apache.http.util.EntityUtils"%>
-<%@page import="org.apache.http.HttpEntity"%>
-<%@page import="org.apache.http.HttpResponse"%>
-<%@page import="org.apache.http.client.methods.HttpGet"%>
-<%@page import="org.apache.http.impl.client.HttpClientBuilder"%>
-<%@page import="org.apache.http.client.HttpClient"%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <!DOCTYPE html>
 <html>

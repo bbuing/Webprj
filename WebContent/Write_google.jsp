@@ -6,169 +6,92 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmsGI_8BQcslfyf8AnFmSvi0zESELZWOQ&signed_in=true&callback=initMap"
-      async defer></script>
+<script src="js/holder.js"></script>
+<script src="js/write.js"></script>
+<style>
+</style>
 <Script>
-$.fn.setPreview = function(opt){
-    "use strict"
-    var defaultOpt = {
-        inputFile: $(this),
-        img: null,
-        w: 200,
-        h: 200
-    };
-    $.extend(defaultOpt, opt);
- 
-    var previewImage = function(){
-        if (!defaultOpt.inputFile || !defaultOpt.img) return;
- 
-        var inputFile = defaultOpt.inputFile.get(0);
-        var img       = defaultOpt.img.get(0);
- 
-        // FileReader
-        if (window.FileReader) {
-            // image 파일만
-            if (!inputFile.files[0].type.match(/image\//)) return;
- 
-            // preview
-            try {
-                var reader = new FileReader();
-                reader.onload = function(e){
-                    img.src = e.target.result;
-                    img.style.width  = defaultOpt.w+'px';
-                    img.style.height = defaultOpt.h+'px';
-                    img.style.display = '';
-                }
-                reader.readAsDataURL(inputFile.files[0]);
-            } catch (e) {
-                // exception...
-            }
-        // img.filters (MSIE)
-        } else if (img.filters) {
-            inputFile.select();
-            inputFile.blur();
-            var imgSrc = document.selection.createRange().text;
- 
-            img.style.width  = defaultOpt.w+'px';
-            img.style.height = defaultOpt.h+'px';
-            img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""+imgSrc+"\")";            
-            img.style.display = '';
-        // no support
-        } else {
-            // Safari5, ...
-        }
-    };
- 
-    // onchange
-    $(this).change(function(){
-        previewImage();
-    });
-};
-
-	function addTheme() {
-		var divTheme = document.getElementById("addTheme");
-		var div = document.createElement("div");
-		div.innerHTML = '<div class="group_theme">'
-				+ '<div class="btn-group" >'
-				+ '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plane"></span></button>'
-				+ '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-heart"></span></button>'
-				+ '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>'
-				+ '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-send"></span></button></div>'
-				+ '<div id="theme_row" class="form-group text-right">'
-				+ '<textarea class="form-control" rows="8" name="theme" placeholder="내용을 작성해 주세요."></textarea>'
-				+ '<button type="button" class="btn btn-default" onClick="removeTheme(this)"><span class="glyphicon glyphicon-trash"></span></button></div>'
-				+ '</div>';
-		divTheme.appendChild(div);
+function selectImg(i) {
+	var check = $(i).is(".selected");
+	if(check == true) {
+		$(i).css("border", "1px solid white").removeClass("selected");
 	}
-	function removeTheme(theme) {
-		$(theme).parent().parent().remove();
+	else {
+		$(i).css("border","1px solid red").addClass("selected");		
 	}
-	
-	function initMap() {
-		  var map = new google.maps.Map(document.getElementById('map'), {
-		    zoom: 8,
-		    center: {lat: -34.397, lng: 150.644}
-		  });
-		  var geocoder = new google.maps.Geocoder();
+}
 
-		  document.getElementById('searchBtn').addEventListener('click', function() {
-		    geocodeAddress(geocoder, map);
-		  });
-		}
-
-		function geocodeAddress(geocoder, resultsMap) {
-		  var address = document.getElementById('address').value;
-		  geocoder.geocode({'address': address}, function(results, status) {
-		    if (status === google.maps.GeocoderStatus.OK) {
-		      resultsMap.setCenter(results[0].geometry.location);
-		      var marker = new google.maps.Marker({
-		        map: resultsMap,
-		        position: results[0].geometry.location
-		      });
-		    } else {
-		      alert('Geocode was not successful for the following reason: ' + status);
-		    }
-		  });
-		}
-		
-		function submitTitle() {
-			var data = new FormData();
-			var file = $('#title_img')[0].files[0];
-			data.append('file', file);
-			$.ajax({
-				url : 'Upload.jsp',
-				data : data,
-				type : 'POST',
-				mimeType : 'multipart/form-data',
-				processData : false,
-				contentType : false,
-				success : function(ret) {
-					var rawFile = new XMLHttpRequest();
-					rawFile.open("GET", file, false);
-					rawFile.onreadystatechange = function() {
-						if(rawFile.readyState == 4) {
-							if(rawFile.status == 200) {
-								var allText = rawFile.responseText;
-								alert(allText);
-							}
-						}
-					}
-					rawFile.send(null);
-					$("#bg_title").css("background", "url(C:/Eclipse/main.jpg)");
-				}
-			});
-		}
-		
-		$(document).ready(function(){
-		    var opt = {
-		        img: $('#img_preview'),
-		        w: 200,
-		        h: 200
-		    };
-		    
-			$('#title_img').setPreview(opt);
-		});
+jQuery(document).ready(function() {
+	$("#instaBtn").click(function(event){
+		event.preventDefault();
+		window.open("https://www.instagram.com/oauth/authorize/?client_id=05496e57bdfa4b7494198b60c3a806d0&redirect_uri=http://localhost:8080/Webprj/Write_google.jsp&response_type=token&scope=likes+comments+relationships+basic");
+	})
+});
 </Script>
-
+<script>
+jQuery(function($) {  
+    var tocken = "3321034159.05496e5.f52383b3aa8442b598bc9520813ed274"; /* Access Tocken 입력 */  
+    var count = "6";  
+    $.ajax({  
+        type: "GET",  
+        dataType: "jsonp",  
+        cache: false,  
+        url: "https://api.instagram.com/v1/users/self/media/recent/?access_token=" + tocken + "&count=" + count,  
+        success: function(response) {  
+         if ( response.data.length > 0 ) {
+              for(var i = 0; i < response.data.length; i++) {  
+                   var insta = '<div class="col-md-4">';  
+                   //insta += "<a target='_blank' href='" + response.data[i].link + "'>";  
+                   //insta += "<div class='image-layer'>";  
+                   //insta += "<img src='" + response.data[i].images.thumbnail.url + "'>";  
+                   insta += '<img src="' + response.data[i].images.thumbnail.url + '" onClick="selectImg(this)">';  
+                   insta += "</div>";  
+                   //console.log(response.data[i].caption.text);  
+                   //if ( response.data[i].caption !== null ) {  
+                     //   insta += "<div class='caption-layer'>";  
+                     //   if ( response.data[i].caption.text.length > 0 ) {  
+                       //      insta += "<p class='insta-caption'>" + response.data[i].caption.text + "</p>"  
+                       // }  
+                       // insta += "<span class='insta-likes'>" + response.data[i].likes.count + " Likes</span>";  
+                        //insta += "</div>";  
+                   //}  
+                   //insta += "</a>";  
+                   //insta += "</div>";  
+                   $("#instaPics").append(insta);  
+              }  
+         }  
+        }  
+       });  
+});  
+</script>
+<%
+	String token = request.getParameter("access_token");
+%>
 </head>
 <body>
 	<div class="container">
 		<div class="row" align="center">
 			<h1>헤더 부분 입니다.</h1>
-			<hr />
+			<hr/>
 		</div>
 
 		<!-- 제목,여행기간을 작성할 상단 부분 -->
 		<div class="row">
-			<div id="bg_title" class="col-md-12" align="center">
-				<input class="form-control input-lg" type="text" name="title" placeholder="타이틀을 넣어주세요" /><br/>
-				<input class="form-control input-lg" type="text" name="date" placeholder="여행 기간 입력" /><br/><br/>
-				<img id="img_preview" style="display:none;"/>
+			<div class="form-inline col-md-12" align="center">
+				<div class="form-group thumbnail" style="float:left">
+					<img id="img_preview" src="holder.js/200x200"/>
+					<div class="caption">
+						<input type="file" id="title_img" style="display: none"/>
+						<button type="button" class="btn btn-info" onClick="document.getElementById('title_img').click();">
+							<span class="glyphicon glyphicon-picture"></span>
+						</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<input class="form-control input-lg" type="text" size="60" name="title" placeholder="타이틀을 넣어주세요" /><br/><br/>
+					<input class="form-control input-lg" type="text" size="60" name="date" placeholder="여행 기간 입력" /><br/><br/>
+				</div>
 				<form id="title_upload" action="upload.do" method="POST" enctype="multipart/form-data">
-					<input type="file" id="title_img" style="display: none"/>
-					<button type="button" class="btn btn-info" onClick="document.getElementById('title_img').click();">
-						<span class="glyphicon glyphicon-picture"></span>
-					</button>
 				</form>
 			</div>
 		</div>
@@ -201,46 +124,26 @@ $.fn.setPreview = function(opt){
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 				</div>
 			</div>
-			<div class="col-md-6"
-				style="border: 1px black solid; margin-top: 35px">
+			<div class="col-md-6" style="border: 1px black solid; margin-top: 35px">
 				<div class="btn-group btn-group-justified">
 					<input type="file" id="card_img" style="display: none" />
-					<a href="#" class="btn btn-default" onclick="document.getElementById('card_img').click();"><span class="glyphicon glyphicon-picture"></span></a> 
-						<a href="#"	class="btn btn-default"><span
-						class="glyphicon glyphicon-camera"></span></a> <a href="#"
-						class="btn btn-default"><span
-						class="glyphicon glyphicon-thumbs-up"></span></a> <a href="#"
-						class="btn btn-default active"><span
-						class="glyphicon glyphicon-map-marker"></span></a> <a href="#"
-						class="btn btn-default"><span
-						class="glyphicon glyphicon-option-horizontal"></span></a>
+					<a class="btn btn-default btn-sm" onclick="document.getElementById('card_img').click();"><span class="glyphicon glyphicon-picture"></span></a> 
+					<a class="btn btn-default btn-sm" id="instaBtn"><span class="glyphicon glyphicon-camera"></span></a>
+					<a class="btn btn-default btn-sm"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+					<a class="btn btn-default btn-sm active"><span class="glyphicon glyphicon-map-marker"></span></a>
+					<a class="btn btn-default btn-sm"><span class="glyphicon glyphicon-option-horizontal"></span></a>
 				</div>
-				<h3>
-					<strong>Google Maps</strong>
-				</h3>
-				<div class="input-group">
-					<input type="search" id="search" class="form-control"
-						placeholder="지역을 입력하세요" /> <span class="input-group-btn">
-						<button class="btn btn-default" type="button">
-							<span class="glyphicon glyphicon-search"></span>
-						</button>
-					</span>
+				<div>
+					<!-- <%@include file="GoogleMap.jsp" %>-->
+					<div id="instaPics"></div>
 				</div>
-				<div id="floating-panel">
-					<input id="address" type="textbox" value="서울"> 
-				</div>
-				<div id="map"></div>
-				<button type="button" id="searchBtn" class="checkbtn btn btn-success" value="확인">확인</button>
 			</div>
 		</div>
+		
 		<div class="row" align="center">
 			<hr />
 			<h1>푸터 부분 입니다.</h1>
 		</div>
 	</div>
-
-	<script type="text/javascript"
-		src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
