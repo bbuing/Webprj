@@ -1,6 +1,4 @@
-<%@page import="java.io.InputStreamReader"%>
-<%@page import="java.io.InputStream"%>
-<%@page import="java.io.BufferedReader"%>
+﻿<%@page import="org.apache.http.util.EntityUtils"%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <!DOCTYPE html>
 <html>
