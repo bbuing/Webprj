@@ -60,16 +60,21 @@ $.fn.setPreview = function(opt){
 		var divTheme = document.getElementById("addTheme");
 		var div = document.createElement("div");
 		div.innerHTML = '<div class="group_theme">'
-				+ '<div class="btn-group" >'
-				+ '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plane"></span></button>'
-				+ '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-heart"></span></button>'
-				+ '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>'
-				+ '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-send"></span></button></div>'
+				+ '<div class="btn-group">'
+				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-plane"></span></button>'
+				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-heart"></span></button>'
+				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-home"></span></button>'
+				+ '<button type="button" class="btn btn-default active" onClick="setTheme(this)"><span class="glyphicon glyphicon-send"></span></button></div>'
 				+ '<div id="theme_row" class="form-group text-right">'
 				+ '<textarea class="form-control" rows="8" name="theme" placeholder="내용을 작성해 주세요."></textarea>'
 				+ '<button type="button" class="btn btn-default" onClick="removeTheme(this)"><span class="glyphicon glyphicon-trash"></span></button></div>'
 				+ '</div>';
 		divTheme.appendChild(div);
+		
+		$("<span>", {
+			addClass : "glyphicon glyphicon-send"
+		}).appendTo($("#theme_order"));
+		
 	}
 	function removeTheme(theme) {
 		$(theme).parent().parent().remove();

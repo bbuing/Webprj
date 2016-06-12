@@ -1,5 +1,4 @@
-﻿<%@page import="org.apache.http.util.EntityUtils"%>
-<%@ page contentType="text/html; charset=utf-8"%>
+﻿<%@ page contentType="text/html; charset=utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
