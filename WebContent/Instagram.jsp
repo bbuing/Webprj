@@ -11,17 +11,17 @@
 	$(document).ready(function(){
 		var token = document.location.href.split("token=");
 		
-		function post_token() {
-			$("<form>",{
-				method : "POST",
-				action : "http://localhost:8080/Webprj/Write_google.jsp",
-				value : $("<input>",{
-					type : "hidden",
-					name : "token",
-					value : token[1]
-					})
-			}).submit();
-		}
+		/*var form = $("<form>",{
+			method : "POST",
+			action : "Write_google.jsp",
+		}).append($("<input>",{
+			type : "hidden",
+			name : "token",
+			value : token[1]
+			}));
+		form.submit();*/
+		opener.document.getElementById("token").value = token[1];
+		alert("인증되었습니다.");
 		window.close();
 	});
 </script>

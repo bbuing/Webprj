@@ -104,14 +104,12 @@ jQuery(function($) {
          }  
         }  
        });  
+	
 });  
 </script>
-<%
-	String token = request.getParameter("token");
-	System.out.println(token);
-%>
 </head>
 <body>
+	<input type="hidden" id="token" name="token" onChange="test()"/>
 	<div class="container">
 		<div id="header" class="row">
 			<h1>헤더 부분 입니다.</h1>
