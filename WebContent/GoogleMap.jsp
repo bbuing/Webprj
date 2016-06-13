@@ -8,16 +8,16 @@
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
 <style>
 	#r_map{
-		width:450px;
-		height:280px;
+		width:360px;
+		height:200px;
 	}
 </style>
 </head>
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-5">
-				<h3><strong>Google Maps</strong></h3>
+			<div class="col-md-4">
+				<h4><strong>Google Maps</strong></h4>
 				<div class="input-group">
 					<input type="search" id="search" class="form-control" placeholder="지역을 입력하세요" /> 
 						<span class="input-group-btn">
@@ -25,6 +25,7 @@
 						</span>
 				</div>
 				<div id="r_map"></div>
+				<button type="button" class="btn btn-default" style="float:right;">저장</button>
 			</div>
 		</div>
 	</div>

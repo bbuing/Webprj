@@ -9,4 +9,24 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <servlet>
+  	<servlet-name>insta.log</servlet-name>
+  	<servlet-class>myservlet.ServletInsta</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>insta.log</servlet-name>
+  	<url-pattern>/insta.log</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>upload.do</servlet-name>
+  	<servlet-class>myservlet.ServletUpload</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>upload.do</servlet-name>
+  	<url-pattern>/upload.do</url-pattern>
+  </servlet-mapping>
 </web-app>

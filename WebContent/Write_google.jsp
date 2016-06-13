@@ -30,39 +30,42 @@
 }
 </style>
 <Script>
-function selectImg(i) {
-	var check = $(i).is(".selected");
-	if(check == true) {
-		$(i).css("border", "2px solid white").removeClass("selected");
-	}
-	else {
-		$(i).css("border","2px solid red").addClass("selected");		
-	}
-}
 
-function setTheme(btn) { // btn : theme를 나타내는 버튼
-	var index = $(btn).parent().parent().index(".group_theme")+1;
-	var icon_btn = $(btn).parent().children();		// 한단계 상위로 올라갔다 내려오면서  btn그룹을 받아온다
-	var icon_type = $(btn).children().attr("class");	// 현재 누른 버튼의 아이콘 모양
-	var title_icon = $("#theme_order");
-	
-	$(icon_btn).each(function(btn_idx){	// 각각의 버튼을 돌면서 누른 버튼과 일치하면 active클래스 추가 아닐시 삭제
-		if($(icon_btn).eq(btn_idx).children().attr("class") == icon_type) {
-			$(icon_btn).eq(btn_idx).addClass("active");
-			$(title_icon).children().eq(index).attr("class", icon_type);
+function cardTab(tab) {
+	var tab_type = $(tab).children().attr("class");	// span의 class, icon 이미지
+	var tabs = $(tab).parent().parent().children(); // navbar의 탭들 <li>
+	$(tabs).each(function(idx){
+		if($(tabs).eq(idx).children().children().attr("class") == tab_type) {
+			$(tabs).eq(idx).addClass("active");
+			switch(idx) {
+				case 0:
+					$("#card").children().eq(idx).css("display", "inline");
+					break;
+				case 1:
+					$("#card").children().eq(idx).css("display", "inline");
+					break;
+				case 2:
+					$("#card").children().eq(idx).css("display", "inline");
+					break;					
+				case 3:
+					$("#card").children().eq(idx).css("display", "inline");
+					break;
+				case 4:
+					$("#card").children().eq(idx).css("display", "inline");
+					break;
+			}
 		}
 		else {
-			$(icon_btn).eq(btn_idx).removeClass("active");
+			$(tabs).eq(idx).removeClass("active");
+			$("#card").children().eq(idx).css("display", "none");
 		}
 	})
 }
 
-var currentScrollTop = 0;
-
 jQuery(document).ready(function() {
 	$("#instaBtn").click(function(event){
 		event.preventDefault();
-		window.open("https://api.instagram.com/oauth/authorize/?client_id=05496e57bdfa4b7494198b60c3a806d0&redirect_uri=http://localhost:8080/Webprj/Write_google.jsp&response_type=token&scope=likes+comments+relationships+basic");
+		window.open("https://api.instagram.com/oauth/authorize/?client_id=05496e57bdfa4b7494198b60c3a806d0&redirect_uri=http://localhost:8080/Webprj/Instagram.jsp&response_type=token&scope=likes+comments+relationships+basic","instaLogin", "left=400, top=300, width=600, height=350");
 	})
 });
 
@@ -104,7 +107,8 @@ jQuery(function($) {
 });  
 </script>
 <%
-	String token = request.getParameter("access_token");
+	String token = request.getParameter("token");
+	System.out.println(token);
 %>
 </head>
 <body>
@@ -118,7 +122,7 @@ jQuery(function($) {
 		<div id="title" class="row">
 			<div class="form-inline col-md-12" align="center">
 				<div class="form-group thumbnail" style="float:left">
-					<img id="img_preview" src="holder.js/200x200"/>
+					<img id="title_img_preview" src="holder.js/200x200"/>
 					<div class="caption">
 						<input type="file" id="title_img" style="display: none"/>
 						<button type="button" class="btn btn-info" onClick="document.getElementById('title_img').click();">
@@ -163,18 +167,20 @@ jQuery(function($) {
 				<!-- 부가내용 추가 버튼(오른쪽) -->
 				<button type="button" class="btn btn-default" onClick="addCard()" style="height: 335px;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 			</div>
-			<div class="col-md-6" style="border: 1px black solid; margin-top: 35px;">
-				<div class="btn-group btn-group-justified">
-					<input type="file" id="card_img" style="display: none" />
-					<a class="btn btn-default btn-sm" onclick="document.getElementById('card_img').click();"><span class="glyphicon glyphicon-picture"></span></a> 
-					<a class="btn btn-default btn-sm" id="instaBtn"><span class="glyphicon glyphicon-camera"></span></a>
-					<a class="btn btn-default btn-sm"><span class="glyphicon glyphicon-thumbs-up"></span></a>
-					<a class="btn btn-default btn-sm active"><span class="glyphicon glyphicon-map-marker"></span></a>
-					<a class="btn btn-default btn-sm"><span class="glyphicon glyphicon-option-horizontal"></span></a>
-				</div>
-				<div>
-					<%@include file="GoogleMap.jsp" %>
-					<!-- <div id="instaPics"></div>-->
+			<div class="col-md-4" style="border: 1px black solid; margin-top: 35px; padding:5px; width:390px; height:345px;">
+				<ul class="nav nav-tabs nav-justified">
+					<li><input type="file" id="card_img" style="display: none" /><a class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-picture"></span></a></li>
+					<li><a id="instaBtn" class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-camera"></span></a></li>
+					<li><a class="btn btn-default"onclick="cardTab(this)"><span class="glyphicon glyphicon-thumbs-up"></span></a></li>
+					<li><a class="btn btn-default"onclick="cardTab(this)"><span class="glyphicon glyphicon-map-marker"></span></a></li>
+					<li><a class="btn btn-default"onclick="cardTab(this)"><span class="glyphicon glyphicon-option-horizontal"></span></a></li>
+				</ul>
+				<div id="card">
+					<div style="display: none;"><center><jsp:include page = "OwnPhotos.jsp"/></center></div>
+					<div id="instaPics" style="display: none;"></div>
+					<div style="display: none;"></div>
+					<div style="display: none;"><center><jsp:include page = "GoogleMap.jsp"/></center></div>
+					
 				</div>
 			</div>
 		</div>
