@@ -8,10 +8,11 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="js/holder.js"></script>
 <script src="js/write.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 <style>
 #instaPics{
-	width:500px;
-	height:500px;
+	width:400px;
+	height:250px;
 }
 #insta{
 	width:150px;
@@ -60,34 +61,37 @@ function cardTab(tab) {
 			$("#card").children().eq(idx).css("display", "none");
 		}
 	})
+	
+	function showCard() {
+		$("#card_content").css("display", "inline");
+	}
 }
 
-jQuery(document).ready(function() {
-	$("#instaBtn").click(function(event){
-		event.preventDefault();
-		window.open("https://api.instagram.com/oauth/authorize/?client_id=05496e57bdfa4b7494198b60c3a806d0&redirect_uri=http://localhost:8080/Webprj/Instagram.jsp&response_type=token&scope=likes+comments+relationships+basic","instaLogin", "left=400, top=300, width=600, height=350");
-	})
-});
-
-</Script>
-<script>
-jQuery(function($) {  
-    var tocken = "3321034159.05496e5.f52383b3aa8442b598bc9520813ed274"; /* Access Tocken 입력 */  
-    var count = "9";  
+function callback() {
+	var token = $("#token").val(); /* Access Tocken 입력 */  
+    var count = "16";
     $.ajax({  
         type: "GET",  
         dataType: "jsonp",  
         cache: false,  
-        url: "https://api.instagram.com/v1/users/self/media/recent/?access_token=" + tocken + "&count=" + count,  
+        url: "https://api.instagram.com/v1/users/self/media/recent/?access_token=" + token + "&count=" + count,  
         success: function(response) {  
          if ( response.data.length > 0 ) {
-              for(var i = 0; i < response.data.length; i++) {  
-                   var insta = '<div id="insta" class="col-md-4">';  
+				var cnt=0;0.
+				var insta = "";
+				for(var i = 0; i < response.data.length; i++) {
+					if(cnt % 4 == 0) {
+						if(insta != "") {
+							insta += "</div>";	
+						}
+						insta += '<div class="col-md-10">';
+					}
+           	   		insta += '<img src="' + response.data[i].images.thumbnail.url + '" onClick="selectImg(this)" style="border:2px solid white; width:70px; height=70px;"/>';
+           	   		insta += '<input type="hidden" name="link" value=' + response.data[i].images.thumbnail.url + ' />'; 
+           	   		cnt++;
                    //insta += "<a target='_blank' href='" + response.data[i].link + "'>";  
                    //insta += "<div class='image-layer'>";  
                    //insta += "<img src='" + response.data[i].images.thumbnail.url + "'>";  
-                   insta += '<img src="' + response.data[i].images.thumbnail.url + '" onClick="selectImg(this)">';  
-                   insta += "</div>";  
                    //console.log(response.data[i].caption.text);  
                    //if ( response.data[i].caption !== null ) {  
                      //   insta += "<div class='caption-layer'>";  
@@ -98,15 +102,110 @@ jQuery(function($) {
                         //insta += "</div>";  
                    //}  
                    //insta += "</a>";  
-                   //insta += "</div>";  
-                   $("#instaPics").append(insta);  
-              }  
+                   //insta += "</div>";    
+              } 
+				insta += "</div>";
+				$("#instaPics").append(insta);
          }  
         }  
        });  
-	
-});  
-</script>
+}
+
+jQuery(document).ready(function() {
+	$("#instaBtn").click(function(event){
+		event.preventDefault();
+		var token = $("#token").val();
+		if(token != "") {
+			$("#instaPics").empty();
+			callback();
+		}
+		else {
+			var win = window.open("https://api.instagram.com/oauth/authorize/?client_id=05496e57bdfa4b7494198b60c3a806d0&redirect_uri=http://localhost:8080/Webprj/Instagram.jsp&response_type=token&scope=likes+comments+relationships+basic","instaLogin", "left=400, top=300, width=600, height=350");
+			var interval = window.setInterval(function(){
+				try {
+					if(win == null || win.closed) {
+						window.clearInterval(interval);
+						callback();
+					}
+				} catch(e){}
+			}, 1000);	
+		}
+	})
+	// insta에서 가져온 각각의 사진들의 썸네일을 생성, 그 후 설명을 달 수 있게 한다.
+	$("#instaAdd").click(function(){
+		var image = $("img[class=selected]");
+		var size = image.size();
+		for(var i=0; i<size; i++) {
+			// 썸네일의 크기를 지정할 바깥 div
+			var div = $("<div>",{
+				css : {"width":"220px", "height":"220px"}
+			});
+			// 각각의 사진을 담을 썸네일 생성
+			var thumbnail = $("<div>",{
+				id : "insta_thumbnail"+i,
+				addClass : "thumbnail"
+			});
+			// 썸네일에 넣을 이미지
+			thumbnail.append($("<img>",{
+				src : image.get(i).src 
+			}));
+			// 각 이미지에 추가할 설명
+			thumbnail.append($("<input>",{
+				type : "text",
+				placeholder : "설명"
+			}));
+			// 첫 번째 썸네일은 바로 보이게 한다.
+			if(i == 0) {
+				thumbnail.append($("<div>",{
+					addClass : "caption"
+				})).append($("<button>",{
+					type : "button",
+					addClass : "btn btn-info",
+					text : "다음",
+					click : function(){
+						$(this).parent().parent().css("display","none");
+						$("#insta_thumbnail"+(i+1)).parent().css("display","inline");
+					}
+				}));
+			}
+			// 두 번째 이후 썸네일은 다음 버튼을 눌러야 보인다. 이때 이전 썸네일은 안보이게 한다.
+			else if(i < size-1) {
+				thumbnail.append($("<div>",{
+					addClass : "caption"
+				})).append($("<button>",{
+					type : "button",
+					addClass : "btn btn-info",
+					text : "다음",
+					click : function(){
+						$(this).parent().parent().css("display","none");
+						$("#thumbnail").eq(i+1).css("display","inline");
+					}
+				}));
+				$(div).css("display","none");
+			}
+			else {
+				thumbnail.append($("<div>",{
+					addClass : "caption"
+				})).append($("<button>",{
+					type : "button",
+					addClass : "btn btn-info",
+					text : "완료",
+					click : function(){
+						$(this).parent().parent().css("display","none");
+						$("#thumbnail").eq(i+1).css("display","inline");
+					}
+				}));
+				$(div).css("display","none");
+			}
+			$(div).append(thumbnail);
+			$("#instaDesc").append(div);
+		}
+		$("#instaPics").css("display","none");
+		$("#instaAdd").css("display","none");
+		$("#instaDesc").css("display","inline");
+	});
+});
+</Script>
 </head>
 <body>
 	<input type="hidden" id="token" name="token" onChange="test()"/>
@@ -117,8 +216,8 @@ jQuery(function($) {
 		</div>
 
 		<!-- 제목,여행기간을 작성할 상단 부분 -->
-		<div id="title" class="row">
-			<div class="form-inline col-md-12" align="center">
+		<div id="title" class="row"class="form-inline col-md-12">
+			<div  align="center">
 				<div class="form-group thumbnail" style="float:left">
 					<img id="title_img_preview" src="holder.js/200x200"/>
 					<div class="caption">
@@ -151,10 +250,7 @@ jQuery(function($) {
 						<button type="button" class="btn btn-default active" onClick="setTheme(this)"><span class="glyphicon glyphicon-send"></span></button>
 					</div>
 				<div class="form-group">
-					<textarea class="form-control" rows="16" name="theme" placeholder="내용을 작성해 주세요."></textarea>
-				</div>
-				<div class="form-group">
-					<!-- 테마 추가 버튼(아래쪽) -->
+					<textarea class="form-control" rows="16" name="theme" placeholder="내용을 작성해 주세요."></textarea><br/>
 					<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block" onClick="addTheme()">
 						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					</button>
@@ -163,9 +259,9 @@ jQuery(function($) {
 			</div>
 			<div class="col-md-1" style="margin-top: 35px">
 				<!-- 부가내용 추가 버튼(오른쪽) -->
-				<button type="button" class="btn btn-default" onClick="addCard()" style="height: 335px;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+				<button type="button" class="btn btn-default" onClick="showCard()" style="height: 335px;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 			</div>
-			<div class="col-md-4" style="border: 1px black solid; margin-top: 35px; padding:5px; width:390px; height:345px;">
+			<div id="card_content" class="col-md-4" style="border: 1px black solid; margin-top: 35px; padding:5px; width:390px; height:345px; display:none;">
 				<ul class="nav nav-tabs nav-justified">
 					<li><input type="file" id="card_img" style="display: none" /><a class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-picture"></span></a></li>
 					<li><a id="instaBtn" class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-camera"></span></a></li>
@@ -175,14 +271,17 @@ jQuery(function($) {
 				</ul>
 				<div id="card">
 					<div style="display: none;"><center><jsp:include page = "OwnPhotos.jsp"/></center></div>
-					<div id="instaPics" style="display: none;"></div>
+					<div class="continaer" style="display: none;">
+						<div id="instaPics" class="row" style="overflow: auto;"></div>
+						<button type="button" id="instaAdd" class="btn btn-info">추가</button>
+						<div id="instaDesc" style="display:none;"></div>
+					</div>
 					<div style="display: none;"></div>
 					<div style="display: none;"><center><jsp:include page = "GoogleMap.jsp"/></center></div>
-					
 				</div>
 			</div>
 		</div>
-		
+		<div id="test"></div>
 		<div id="footer" class="row">
 			<hr />
 			<h1>푸터 부분 입니다.</h1>

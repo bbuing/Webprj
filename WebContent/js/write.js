@@ -61,10 +61,13 @@ $.fn.setPreview = function(opt){
 				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-plane"></span></button>'
 				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-heart"></span></button>'
 				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-home"></span></button>'
-				+ '<button type="button" class="btn btn-default active" onClick="setTheme(this)"><span class="glyphicon glyphicon-send"></span></button></div>'
-				+ '<div id="theme_row" class="form-group text-right">'
-				+ '<textarea class="form-control" rows="16" name="theme" placeholder="내용을 작성해 주세요." onFocus="focusChange(this)"></textarea>'
+				+ '<button type="button" class="btn btn-default active" onClick="setTheme(this)"><span class="glyphicon glyphicon-send"></span></button>'
 				+ '<button type="button" class="btn btn-default" onClick="removeTheme(this)"><span class="glyphicon glyphicon-trash"></span></button></div>'
+				+ '<div id="theme_row" class="form-group text-right">'
+				+ '<textarea class="form-control" rows="16" name="theme" placeholder="내용을 작성해 주세요." onFocus="focusChange(this)"></textarea><br/>'
+				+ '<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block" onClick="addTheme()">'
+				+ '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>'
+				+ '</div>'
 				+ '</div>';
 		divTheme.appendChild(div);
 		
@@ -81,6 +84,33 @@ $.fn.setPreview = function(opt){
 	function focusChange(theme) {
 		
 	}
+	
+	/*function addCard() {
+		var content = document.getElementById("content");
+		var div = document.createElement("div");
+		div.innerHTML = '<div id="card_content" class="col-md-4" style="border: 1px black solid; margin-top: 35px; padding:5px; width:390px; height:345px;">'
+			+ '<ul class="nav nav-tabs nav-justified">' 
+			+ '<li><input type="file" id="card_img" style="display: none" /><a class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-picture"></span></a></li>' 
+			+ '<li><a id="instaBtn" class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-camera"></span></a></li>'
+			+ '<li><a class="btn btn-default"onclick="cardTab(this)"><span class="glyphicon glyphicon-thumbs-up"></span></a></li>'
+			+ '<li><a class="btn btn-default"onclick="cardTab(this)"><span class="glyphicon glyphicon-map-marker"></span></a></li>'
+			+ '<li><a class="btn btn-default"onclick="cardTab(this)"><span class="glyphicon glyphicon-option-horizontal"></span></a></li>'
+			+ '</ul>'
+			+ '<div id="card">'
+			+ '<div style="display: none;"><center><jsp:include page = "OwnPhotos.jsp"/></center></div>'
+			+ '<div class="continaer" style="display: none;">'
+			+ '<div id="instaPics" class="row"></div>'
+			+ '</div>'
+			+ '<div style="display: none;"></div>'
+			+ '<div style="display: none;"><center><jsp:include page = "GoogleMap.jsp"/></center></div>'
+			+ '</div>';
+		content.appendChild(div);
+	}*/
+	
+	function showCard() {
+		$("#card_content").css("display", "inline");
+	}
+	
 	// 인스타그램에서 가져온 사진을 선택, 비선택 표시하는 함수
 	function selectImg(i) {
 		var check = $(i).is(".selected");
@@ -88,7 +118,7 @@ $.fn.setPreview = function(opt){
 			$(i).css("border", "2px solid white").removeClass("selected");
 		}
 		else {
-			$(i).css("border","2px solid red").addClass("selected");		
+			$(i).css("border","2px solid red").addClass("selected");
 		}
 	}
 	// 테마의 주제 변경시 테마의 주제 아이콘과 작성순서의 아이콘을 변경하는 함수
