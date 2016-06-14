@@ -138,65 +138,44 @@ jQuery(document).ready(function() {
 		for(var i=0; i<size; i++) {
 			// 썸네일의 크기를 지정할 바깥 div
 			var div = $("<div>",{
+				addClass : "insta",
 				css : {"width":"220px", "height":"220px"}
 			});
 			// 각각의 사진을 담을 썸네일 생성
 			var thumbnail = $("<div>",{
-				id : "insta_thumbnail"+i,
 				addClass : "thumbnail"
 			});
 			// 썸네일에 넣을 이미지
 			thumbnail.append($("<img>",{
-				src : image.get(i).src 
+				src : image.get(i).src,
+				css : {"width":"200px", "height":"200px"}
 			}));
-			// 각 이미지에 추가할 설명
-			thumbnail.append($("<input>",{
-				type : "text",
-				placeholder : "설명"
-			}));
-			// 첫 번째 썸네일은 바로 보이게 한다.
-			if(i == 0) {
-				thumbnail.append($("<div>",{
-					addClass : "caption"
+			// 각각의 썸네일에 caption으로 설명text와 button을 달아준다.
+			var caption = $("<div>",{
+				addClass : "caption"
+			});
+			caption.append($("<input>",{
+					type : "text",
+					placeholder : "설명"
 				})).append($("<button>",{
 					type : "button",
 					addClass : "btn btn-info",
-					text : "다음",
+					text : "확인",
 					click : function(){
-						$(this).parent().parent().css("display","none");
-						$("#insta_thumbnail"+(i+1)).parent().css("display","inline");
+						$(this).parent().parent().parent().css("display","none");
+						if($(this).parent().parent().parent().next().html() == "") {
+							alert("완료");
+						}
+						else {
+							$(this).parent().parent().parent().next().css("display","inline");
+						}
 					}
 				}));
-			}
-			// 두 번째 이후 썸네일은 다음 버튼을 눌러야 보인다. 이때 이전 썸네일은 안보이게 한다.
-			else if(i < size-1) {
-				thumbnail.append($("<div>",{
-					addClass : "caption"
-				})).append($("<button>",{
-					type : "button",
-					addClass : "btn btn-info",
-					text : "다음",
-					click : function(){
-						$(this).parent().parent().css("display","none");
-						$("#thumbnail").eq(i+1).css("display","inline");
-					}
-				}));
+			// 두 번째 이후 썸네일은 보이지 않게 한다.
+			if(i > 0) {
 				$(div).css("display","none");
 			}
-			else {
-				thumbnail.append($("<div>",{
-					addClass : "caption"
-				})).append($("<button>",{
-					type : "button",
-					addClass : "btn btn-info",
-					text : "완료",
-					click : function(){
-						$(this).parent().parent().css("display","none");
-						$("#thumbnail").eq(i+1).css("display","inline");
-					}
-				}));
-				$(div).css("display","none");
-			}
+			$(thumbnail).append(caption);
 			$(div).append(thumbnail);
 			$("#instaDesc").append(div);
 		}
@@ -217,7 +196,7 @@ jQuery(document).ready(function() {
 
 		<!-- 제목,여행기간을 작성할 상단 부분 -->
 		<div id="title" class="row"class="form-inline col-md-12">
-			<div  align="center">
+			<div class="form-inline" align="center">
 				<div class="form-group thumbnail" style="float:left">
 					<img id="title_img_preview" src="holder.js/200x200"/>
 					<div class="caption">
