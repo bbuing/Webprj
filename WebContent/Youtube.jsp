@@ -8,7 +8,7 @@
 	<style>
 		p.box { border:1px solid #000; }
 		#get_view {
-			width:100px;
+			width:380px;
 			height:100px;
 		}
 	</style>

@@ -107,7 +107,7 @@
 						<button type="button" id="instaAdd" class="btn btn-info">추가</button>
 						<div id="instaDesc" style="display:none;"></div>
 					</div>
-					<div style="display: none;"><center><jsp:include page = "Youtube.jsp" /></center></div>
+					<div style="display: none;"><jsp:include page = "Youtube.jsp" /></div>
 					<div style="display: none;"><jsp:include page = "GoogleMap.jsp"/></div>
 				</div>
 			</div>
