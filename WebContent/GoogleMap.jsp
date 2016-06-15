@@ -6,45 +6,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmsGI_8BQcslfyf8AnFmSvi0zESELZWOQ&signed_in=true&callback=initMap" async defer></script>
 <style>
 	#r_map{
 		width:360px;
-		height:200px;
+		height:250px;
 	}
 </style>
-</head>
-<body>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<h4><strong>Google Maps</strong></h4>
-				<div class="input-group">
-					<input type="search" id="search" class="form-control" placeholder="지역을 입력하세요" /> 
-						<span class="input-group-btn">
-							<button class="btn btn-default" id="searchBtn" type="button"><span class="glyphicon glyphicon-search"></span></button>
-						</span>
-				</div>
-				<div id="r_map"></div>
-				<button type="button" class="btn btn-default" style="float:right;">저장</button>
-			</div>
-		</div>
-	</div>
-	
-	<script>
+<script>
 	function initMap() {
+		var myLatLng = {lat : 37.570152, lng : 126.983078};
 		var map = new google.maps.Map(document.getElementById('r_map'), {
-			zoom : 8,
-			center : {
-				lat : -34.397,
-				lng : 150.644
-			}
+			zoom : 17,
+			center : myLatLng
 		});
+	      
+	    var marker = new google.maps.Marker({
+			position : myLatLng,
+			map : map,
+			title : '종각역'
+		});
+	    
 		var geocoder = new google.maps.Geocoder();
-
 		document.getElementById('searchBtn').addEventListener('click',
 				function() {
 					geocodeAddress(geocoder, map);
 				});
+		$("#search").bind('keypress', function(e){
+			if(e.which == 13)
+				geocodeAddress(geocoder, map);
+		});
 	}
 
 	function geocodeAddress(geocoder, resultsMap) {
@@ -59,15 +52,20 @@
 					position : results[0].geometry.location
 				});
 			} else {
-				alert('Geocode was not successful for the following reason: '
-						+ status);
+				alert("검색어를 입력하세요!");
 			}
 		});
-	}
+	}	
 </script>
-	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmsGI_8BQcslfyf8AnFmSvi0zESELZWOQ&signed_in=true&callback=initMap"
-        async defer></script>
+</head>
+<body>
+		<div class="input-group" style="width:360px;">
+			<input type="search" id="search" class="form-control" placeholder="지역을 입력하세요"/> 
+			<span class="input-group-btn">
+				<button class="btn btn-default" id="searchBtn" type="button">검색</span></button>
+			</span>
+		</div>
+		<div id="r_map"></div>
+		<button type="button" class="btn btn-default" style="float:right;">저장</button>
 </body>
 </html>

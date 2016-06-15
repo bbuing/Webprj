@@ -106,11 +106,86 @@ $.fn.setPreview = function(opt){
 			+ '</div>';
 		content.appendChild(div);
 	}*/
-	
+
 	function showCard() {
 		$("#card_content").css("display", "inline");
 	}
-	
+	// card의 탭 전환 함수
+	function cardTab(tab) {
+		var tab_type = $(tab).children().attr("class");	// span의 class, icon 이미지
+		var tabs = $(tab).parent().parent().children(); // navbar의 탭들 <li>
+		$(tabs).each(function(idx){
+			if($(tabs).eq(idx).children().children().attr("class") == tab_type) {
+				$(tabs).eq(idx).addClass("active");
+				switch(idx) {
+					case 0:
+						$("#card").children().eq(idx).css("display", "inline");
+						break;
+					case 1:
+						$("#card").children().eq(idx).css("display", "inline");
+						break;
+					case 2:
+						$("#card").children().eq(idx).css("display", "inline");
+						break;					
+					case 3:
+						$("#card").children().eq(idx).css("display", "inline");
+						break;
+					case 4:
+						$("#card").children().eq(idx).css("display", "inline");
+						break;
+				}
+			}
+			else {
+				$(tabs).eq(idx).removeClass("active");
+				$("#card").children().eq(idx).css("display", "none");
+			}
+		})
+	}
+	// 인스타그램 인증후 유저의 이미지를 뿌려주는 callback 함수
+	function callback() {
+		var token = $("#token").val(); /* Access Tocken 입력 */  
+	    var count = "16";
+	    $.ajax({  
+	        type: "GET",  
+	        dataType: "jsonp",  
+	        cache: false,  
+	        url: "https://api.instagram.com/v1/users/self/media/recent/?access_token=" + token + "&count=" + count,  
+	        success: function(response) {  
+	         if ( response.data.length > 0 ) {
+					var cnt=0;0.
+					var insta = "";
+					for(var i = 0; i < response.data.length; i++) {
+						if(cnt % 4 == 0) {
+							if(insta != "") {
+								insta += "</div>";	
+							}
+							insta += '<div class="col-md-10">';
+						}
+	           	   		insta += '<img src="' + response.data[i].images.thumbnail.url + '" onClick="selectImg(this)" style="border:2px solid white; width:70px; height=70px;"/>';
+	           	   		insta += '<input type="hidden" name="link" value=' + response.data[i].images.thumbnail.url + ' />'; 
+	           	   		cnt++;
+	                   //insta += "<a target='_blank' href='" + response.data[i].link + "'>";  
+	                   //insta += "<div class='image-layer'>";  
+	                   //insta += "<img src='" + response.data[i].images.thumbnail.url + "'>";  
+	                   //console.log(response.data[i].caption.text);  
+	                   //if ( response.data[i].caption !== null ) {  
+	                     //   insta += "<div class='caption-layer'>";  
+	                     //   if ( response.data[i].caption.text.length > 0 ) {  
+	                       //      insta += "<p class='insta-caption'>" + response.data[i].caption.text + "</p>"  
+	                       // }  
+	                       // insta += "<span class='insta-likes'>" + response.data[i].likes.count + " Likes</span>";  
+	                        //insta += "</div>";  
+	                   //}  
+	                   //insta += "</a>";  
+	                   //insta += "</div>";    
+	              } 
+					insta += "</div>";
+					$("#instaPics").append(insta);
+	         }  
+	        }  
+	       });  
+	}
+
 	// 인스타그램에서 가져온 사진을 선택, 비선택 표시하는 함수
 	function selectImg(i) {
 		var check = $(i).is(".selected");
@@ -179,4 +254,97 @@ $.fn.setPreview = function(opt){
 	        h: 200
 		}
 		$('#card_img').setPreview(opt);
+		// card탭에서 인스타그램 탭을 선택했을시 인증 진행
+		$("#instaBtn").click(function(event){
+			event.preventDefault();
+			var token = $("#token").val();
+			if(token != "") {
+				$("#instaPics").empty();
+				$("#instaPics").css("display","inline");
+				$("#instaDesc").css("display","none");
+				callback();
+			}
+			else {
+				var win = window.open("https://api.instagram.com/oauth/authorize/?client_id=05496e57bdfa4b7494198b60c3a806d0&redirect_uri=http://localhost:8080/Webprj/Instagram.jsp&response_type=token&scope=likes+comments+relationships+basic","instaLogin", "left=400, top=300, width=600, height=350");
+				var interval = window.setInterval(function(){
+					try {
+						if(win == null || win.closed) {
+							window.clearInterval(interval);
+							callback();
+						}
+					} catch(e){}
+				}, 1000);	
+			}
+		})
+		// insta에서 가져온 각각의 사진들의 썸네일을 생성, 그 후 설명을 달 수 있게 한다.
+		$("#instaAdd").click(function(){
+			var image = $("img[class=selected]");
+			var size = image.size();
+			for(var i=0; i<size; i++) {
+				// 썸네일의 크기를 지정할 바깥 div
+				var div = $("<div>",{
+					addClass : "insta",
+					css : {"width":"220px", "height":"220px", "text-align":"center"}
+				});
+				// 각각의 사진을 담을 썸네일 생성
+				var thumbnail = $("<div>",{
+					addClass : "thumbnail"
+				});
+				// 썸네일에 넣을 이미지
+				thumbnail.append($("<img>",{
+					src : image.get(i).src,
+					css : {"width":"200px", "height":"200px"}
+				}));
+				// 각각의 썸네일에 caption으로 설명text와 button을 달아준다.
+				var caption = $("<div>",{
+					addClass : "caption"
+				});
+				// 두 번째 썸네일 부터는 이전 버튼을 달아준다.
+				if(i > 0) {
+					caption.append($("<button>",{
+						type : "button",
+						addClass : "btn btn-default",
+						css : {"float":"left"},
+						click : function() {
+							$(this).parent().parent().parent().prev().css("display","inline");
+							$(this).parent().parent().parent().css("display","none");
+						}
+					}).append($("<span>",{
+						addClass : "glyphicon glyphicon-chevron-left"
+					})));				
+				}
+				// 다음 버튼
+				caption.append($("<input>",{
+						type : "text",
+						size : 12,
+						placeholder : "설명"
+					})).append($("<button>",{
+						type : "button",
+						addClass : "btn btn-default",
+						css : {"float":"right"},
+						click : function(){
+							$(this).parent().parent().parent().css("display","none");
+							if($(this).parent().parent().parent().next().size() == 0) {
+								alert("저장되었습니다.");
+							}
+							$(this).parent().parent().parent().next().css("display","inline");
+						}
+					}).append($("<span>",{
+						addClass : "glyphicon glyphicon-chevron-right"
+					})));
+				// 두 번째 이후 썸네일은 보이지 않게 한다.
+				if(i > 0) {
+					$(div).css("display","none");
+				}
+				else {
+					$(div).css("display","inline");
+				}
+				$(thumbnail).append(caption);
+				$(div).append(thumbnail);
+				$("#instaDesc").append(div);
+			}
+			$("#instaPics").css("display","none");
+			$("#instaAdd").css("display","none");
+			$("#instaDesc").css("display","inline");
+		});
 	});

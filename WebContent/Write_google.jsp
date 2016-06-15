@@ -19,6 +19,11 @@
 	height:150px;
 	margin:2px;
 }
+#instaDesc {
+	width:400px;
+	height:250px;
+	text-align: center;
+}
 #header {
     position: fixed;
     top: 0px;
@@ -31,159 +36,6 @@
 }
 </style>
 <Script>
-
-function cardTab(tab) {
-	var tab_type = $(tab).children().attr("class");	// span의 class, icon 이미지
-	var tabs = $(tab).parent().parent().children(); // navbar의 탭들 <li>
-	$(tabs).each(function(idx){
-		if($(tabs).eq(idx).children().children().attr("class") == tab_type) {
-			$(tabs).eq(idx).addClass("active");
-			switch(idx) {
-				case 0:
-					$("#card").children().eq(idx).css("display", "inline");
-					break;
-				case 1:
-					$("#card").children().eq(idx).css("display", "inline");
-					break;
-				case 2:
-					$("#card").children().eq(idx).css("display", "inline");
-					break;					
-				case 3:
-					$("#card").children().eq(idx).css("display", "inline");
-					break;
-				case 4:
-					$("#card").children().eq(idx).css("display", "inline");
-					break;
-			}
-		}
-		else {
-			$(tabs).eq(idx).removeClass("active");
-			$("#card").children().eq(idx).css("display", "none");
-		}
-	})
-	
-	function showCard() {
-		$("#card_content").css("display", "inline");
-	}
-}
-
-function callback() {
-	var token = $("#token").val(); /* Access Tocken 입력 */  
-    var count = "16";
-    $.ajax({  
-        type: "GET",  
-        dataType: "jsonp",  
-        cache: false,  
-        url: "https://api.instagram.com/v1/users/self/media/recent/?access_token=" + token + "&count=" + count,  
-        success: function(response) {  
-         if ( response.data.length > 0 ) {
-				var cnt=0;0.
-				var insta = "";
-				for(var i = 0; i < response.data.length; i++) {
-					if(cnt % 4 == 0) {
-						if(insta != "") {
-							insta += "</div>";	
-						}
-						insta += '<div class="col-md-10">';
-					}
-           	   		insta += '<img src="' + response.data[i].images.thumbnail.url + '" onClick="selectImg(this)" style="border:2px solid white; width:70px; height=70px;"/>';
-           	   		insta += '<input type="hidden" name="link" value=' + response.data[i].images.thumbnail.url + ' />'; 
-           	   		cnt++;
-                   //insta += "<a target='_blank' href='" + response.data[i].link + "'>";  
-                   //insta += "<div class='image-layer'>";  
-                   //insta += "<img src='" + response.data[i].images.thumbnail.url + "'>";  
-                   //console.log(response.data[i].caption.text);  
-                   //if ( response.data[i].caption !== null ) {  
-                     //   insta += "<div class='caption-layer'>";  
-                     //   if ( response.data[i].caption.text.length > 0 ) {  
-                       //      insta += "<p class='insta-caption'>" + response.data[i].caption.text + "</p>"  
-                       // }  
-                       // insta += "<span class='insta-likes'>" + response.data[i].likes.count + " Likes</span>";  
-                        //insta += "</div>";  
-                   //}  
-                   //insta += "</a>";  
-                   //insta += "</div>";    
-              } 
-				insta += "</div>";
-				$("#instaPics").append(insta);
-         }  
-        }  
-       });  
-}
-
-jQuery(document).ready(function() {
-	$("#instaBtn").click(function(event){
-		event.preventDefault();
-		var token = $("#token").val();
-		if(token != "") {
-			$("#instaPics").empty();
-			callback();
-		}
-		else {
-			var win = window.open("https://api.instagram.com/oauth/authorize/?client_id=05496e57bdfa4b7494198b60c3a806d0&redirect_uri=http://localhost:8080/Webprj/Instagram.jsp&response_type=token&scope=likes+comments+relationships+basic","instaLogin", "left=400, top=300, width=600, height=350");
-			var interval = window.setInterval(function(){
-				try {
-					if(win == null || win.closed) {
-						window.clearInterval(interval);
-						callback();
-					}
-				} catch(e){}
-			}, 1000);	
-		}
-	})
-	// insta에서 가져온 각각의 사진들의 썸네일을 생성, 그 후 설명을 달 수 있게 한다.
-	$("#instaAdd").click(function(){
-		var image = $("img[class=selected]");
-		var size = image.size();
-		for(var i=0; i<size; i++) {
-			// 썸네일의 크기를 지정할 바깥 div
-			var div = $("<div>",{
-				addClass : "insta",
-				css : {"width":"220px", "height":"220px"}
-			});
-			// 각각의 사진을 담을 썸네일 생성
-			var thumbnail = $("<div>",{
-				addClass : "thumbnail"
-			});
-			// 썸네일에 넣을 이미지
-			thumbnail.append($("<img>",{
-				src : image.get(i).src,
-				css : {"width":"200px", "height":"200px"}
-			}));
-			// 각각의 썸네일에 caption으로 설명text와 button을 달아준다.
-			var caption = $("<div>",{
-				addClass : "caption"
-			});
-			caption.append($("<input>",{
-					type : "text",
-					placeholder : "설명"
-				})).append($("<button>",{
-					type : "button",
-					addClass : "btn btn-info",
-					text : "확인",
-					click : function(){
-						$(this).parent().parent().parent().css("display","none");
-						if($(this).parent().parent().parent().next().html() == "") {
-							alert("완료");
-						}
-						else {
-							$(this).parent().parent().parent().next().css("display","inline");
-						}
-					}
-				}));
-			// 두 번째 이후 썸네일은 보이지 않게 한다.
-			if(i > 0) {
-				$(div).css("display","none");
-			}
-			$(thumbnail).append(caption);
-			$(div).append(thumbnail);
-			$("#instaDesc").append(div);
-		}
-		$("#instaPics").css("display","none");
-		$("#instaAdd").css("display","none");
-		$("#instaDesc").css("display","inline");
-	});
-});
 </Script>
 </head>
 <body>
@@ -240,7 +92,7 @@ jQuery(document).ready(function() {
 				<!-- 부가내용 추가 버튼(오른쪽) -->
 				<button type="button" class="btn btn-default" onClick="showCard()" style="height: 335px;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 			</div>
-			<div id="card_content" class="col-md-4" style="border: 1px black solid; margin-top: 35px; padding:5px; width:390px; height:345px; display:none;">
+			<div id="card_content" class="col-md-4" style="border: 1px silver solid; margin-top: 35px; padding:5px; width:390px; height:345px; display:none;">
 				<ul class="nav nav-tabs nav-justified">
 					<li><input type="file" id="card_img" style="display: none" /><a class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-picture"></span></a></li>
 					<li><a id="instaBtn" class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-camera"></span></a></li>
@@ -249,14 +101,14 @@ jQuery(document).ready(function() {
 					<li><a class="btn btn-default"onclick="cardTab(this)"><span class="glyphicon glyphicon-option-horizontal"></span></a></li>
 				</ul>
 				<div id="card">
-					<div style="display: none;"><center><jsp:include page = "OwnPhotos.jsp"/></center></div>
+					<div style="display: none;"><jsp:include page = "OwnPhotos.jsp"/></div>
 					<div class="continaer" style="display: none;">
 						<div id="instaPics" class="row" style="overflow: auto;"></div>
 						<button type="button" id="instaAdd" class="btn btn-info">추가</button>
 						<div id="instaDesc" style="display:none;"></div>
 					</div>
-					<div style="display: none;"></div>
-					<div style="display: none;"><center><jsp:include page = "GoogleMap.jsp"/></center></div>
+					<div style="display: none;"><center><jsp:include page = "Youtube.jsp" /></center></div>
+					<div style="display: none;"><jsp:include page = "GoogleMap.jsp"/></div>
 				</div>
 			</div>
 		</div>
