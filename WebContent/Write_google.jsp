@@ -34,6 +34,14 @@
 #title {
 	margin-top:110px;
 }
+#card_content {
+	border: 1px silver solid;
+	margin-top: 35px;
+	padding:5px; 
+	width:490px; 
+	height:345px; 
+	display:none;
+}
 </style>
 <Script>
 </Script>
@@ -73,26 +81,26 @@
 		<hr />
 		<!-- 하단 작성할 내용 부분 -->
 		<div class="row">
-			<div class="form-horizontal col-md-4 ">
-					<div class="btn-group">
-						<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-plane"></span></button>
-						<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-heart"></span></button>
-						<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-home"></span></button>
-						<button type="button" class="btn btn-default active" onClick="setTheme(this)"><span class="glyphicon glyphicon-send"></span></button>
-					</div>
+			<div id="theme_list" class="form-horizontal col-md-4 ">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-plane"></span></button>
+					<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-heart"></span></button>
+					<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-home"></span></button>
+					<button type="button" class="btn btn-default active" onClick="setTheme(this)"><span class="glyphicon glyphicon-send"></span></button>
+				</div>
 				<div class="form-group">
 					<textarea class="form-control" rows="16" name="theme" placeholder="내용을 작성해 주세요."></textarea><br/>
-					<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block" onClick="addTheme()">
+					<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block" onClick="addTheme(this)">
 						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					</button>
 				</div>
-				<div id="addTheme"></div>
 			</div>
 			<div class="col-md-1" style="margin-top: 35px">
 				<!-- 부가내용 추가 버튼(오른쪽) -->
-				<button type="button" class="btn btn-default" onClick="showCard()" style="height: 335px;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+				<button id="show_card_btn" class="btn btn-default" onClick="showCard()" style="height: 335px;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+				<button id="del_card_btn" class="btn btn-default" onClick="delCard()" style="height: 335px; display: none;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 			</div>
-			<div id="card_content" class="col-md-4" style="border: 1px silver solid; margin-top: 35px; padding:5px; width:390px; height:345px; display:none;">
+			<div id="card_content" class="col-md-4">
 				<ul class="nav nav-tabs nav-justified">
 					<li><input type="file" id="card_img" style="display: none" /><a class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-picture"></span></a></li>
 					<li><a id="instaBtn" class="btn btn-default" onclick="cardTab(this)"><span class="glyphicon glyphicon-camera"></span></a></li>

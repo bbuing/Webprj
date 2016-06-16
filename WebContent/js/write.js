@@ -53,23 +53,26 @@ $.fn.setPreview = function(opt){
     });
 };
 	// 테마(본문)을 추가하는 함수
-	function addTheme() {
-		var divTheme = document.getElementById("addTheme");
-		var div = document.createElement("div");
-		div.innerHTML = '<div class="group_theme">'
-				+ '<div class="btn-group">'
-				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-plane"></span></button>'
-				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-heart"></span></button>'
-				+ '<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-home"></span></button>'
-				+ '<button type="button" class="btn btn-default active" onClick="setTheme(this)"><span class="glyphicon glyphicon-send"></span></button>'
-				+ '<button type="button" class="btn btn-default" onClick="removeTheme(this)"><span class="glyphicon glyphicon-trash"></span></button></div>'
-				+ '<div id="theme_row" class="form-group text-right">'
-				+ '<textarea class="form-control" rows="16" name="theme" placeholder="내용을 작성해 주세요." onFocus="focusChange(this)"></textarea><br/>'
-				+ '<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block" onClick="addTheme()">'
-				+ '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>'
-				+ '</div>'
-				+ '</div>';
-		divTheme.appendChild(div);
+	function addTheme(theme_list) {
+		var divTheme = $(theme_list).parent();
+		var btn = $("<div>", {
+			addClass : "btn-group"
+		}).append(
+			'<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-plane"></span></button>'
+			+	'<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-heart"></span></button>'
+			+	'<button type="button" class="btn btn-default" onClick="setTheme(this)"><span class="glyphicon glyphicon-home"></span></button>'
+			+	'<button type="button" class="btn btn-default active" onClick="setTheme(this)"><span class="glyphicon glyphicon-send"></span></button>'
+			+	'<button type="button" class="btn btn-default" onClick="removeTheme(this)"><span class="glyphicon glyphicon-trash"></span></button>'
+		);
+		var text = $("<div>", {
+			addClass : "form-group"
+		}).append(
+			'<textarea class="form-control" rows="16" name="theme" placeholder="내용을 작성해 주세요." onFocus="focusChange(this)"></textarea><br/>'
+			+	'<button class="form-control form-group-lg" type="button" class="btn btn-default btn-lg btn-block" onClick="addTheme(this)">'
+			+	'<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>'	
+		);
+		$(btn).insertAfter(divTheme);
+		$(text).insertAfter(btn);
 		
 		$("<span>", {
 			addClass : "glyphicon glyphicon-send"
@@ -109,6 +112,14 @@ $.fn.setPreview = function(opt){
 
 	function showCard() {
 		$("#card_content").css("display", "inline");
+		$("#show_card_btn").css("display", "none");
+		$("#del_card_btn").css("display", "inline");
+	}
+	
+	function delCard() {
+		$("#card_content").css("display", "none");
+		$("#show_card_btn").css("display", "inline");
+		$("#del_card_btn").css("display", "none");
 	}
 	// card의 탭 전환 함수
 	function cardTab(tab) {
@@ -120,18 +131,23 @@ $.fn.setPreview = function(opt){
 				switch(idx) {
 					case 0:
 						$("#card").children().eq(idx).css("display", "inline");
+						$("#card_content").css("height","345px");
 						break;
 					case 1:
 						$("#card").children().eq(idx).css("display", "inline");
+						$("#card_content").css("height","345px");
 						break;
 					case 2:
 						$("#card").children().eq(idx).css("display", "inline");
+						$("#card_content").css("height","820px");
 						break;					
 					case 3:
 						$("#card").children().eq(idx).css("display", "inline");
+						$("#card_content").css("height","345px");
 						break;
 					case 4:
 						$("#card").children().eq(idx).css("display", "inline");
+						$("#card_content").css("height","345px");
 						break;
 				}
 			}
@@ -198,7 +214,8 @@ $.fn.setPreview = function(opt){
 	}
 	// 테마의 주제 변경시 테마의 주제 아이콘과 작성순서의 아이콘을 변경하는 함수
 	function setTheme(btn) { // btn : theme를 나타내는 버튼
-		var index = $(btn).parent().parent().index(".group_theme")+1;
+		var btn_group = $(btn).parent();
+		var index = $("#theme_list").find(btn_group).index()/2;
 		var icon_btn = $(btn).parent().children();		// 한단계 상위로 올라갔다 내려오면서  btn그룹을 받아온다
 		var icon_type = $(btn).children().attr("class");	// 현재 누른 버튼의 아이콘 모양
 		var title_icon = $("#theme_order");
