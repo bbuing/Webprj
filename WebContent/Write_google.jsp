@@ -116,7 +116,7 @@
 						<div id="instaDesc" style="display:none;"></div>
 					</div>
 					<div style="display: none;"><jsp:include page = "Youtube.jsp" /></div>
-					<div style="display: none;"><jsp:include page = "GoogleMap.jsp"/></div>
+					<div id="google" style="display: none;"></div>
 				</div>
 			</div>
 		</div>

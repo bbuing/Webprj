@@ -24,11 +24,14 @@
 		</div>
 		<div id="r_map"></div>
 		<button type="button" class="btn btn-default">저장</button>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmsGI_8BQcslfyf8AnFmSvi0zESELZWOQ&signed_in=true&callback=initMap" async defer></script>
 <script>
+	var map;
+	var geocoder;
+	
 	function initMap() {
+		alert("init");
 		var myLatLng = {lat : 37.570152, lng : 126.983078};
-		var map = new google.maps.Map(document.getElementById('r_map'), {
+		map = new google.maps.Map(document.getElementById('r_map'), {
 			zoom : 17,
 			center : myLatLng
 		});
@@ -39,33 +42,36 @@
 			title : '종각역'
 		});
 	    
-		var geocoder = new google.maps.Geocoder();
-		document.getElementById('searchBtn').addEventListener('click',
-				function() {
-					geocodeAddress(geocoder, map);
-				});
-		$("#search").bind('keypress', function(e){
-			if(e.which == 13)
-				geocodeAddress(geocoder, map);
-		});
-		
-		function geocodeAddress(geocoder, resultsMap) {
-			var address = document.getElementById('search').value;
-			geocoder.geocode({
-				'address' : address
-			}, function(results, status) {
-				if (status === google.maps.GeocoderStatus.OK) {
-					resultsMap.setCenter(results[0].geometry.location);
-					var marker = new google.maps.Marker({
-						map : resultsMap,
-						position : results[0].geometry.location
-					});
-				} else {
-					alert("검색어를 입력하세요!");
-				}
-			});
-		}
+		geocoder = new google.maps.Geocoder();
 	}
+	
+	function geocodeAddress(geocoder, resultsMap) {
+		var address = document.getElementById('search').value;
+		geocoder.geocode({
+			'address' : address
+		}, function(results, status) {
+			if (status === google.maps.GeocoderStatus.OK) {
+				resultsMap.setCenter(results[0].geometry.location);
+				var marker = new google.maps.Marker({
+					map : resultsMap,
+					position : results[0].geometry.location
+				});
+			} else {
+				alert("검색되지 않는 지역입니다. 다른 지역을 입력해주세요");
+			}
+		});
+	}
+	
+	document.getElementById('searchBtn').addEventListener('click',
+			function() {
+				alert("event");
+				geocodeAddress(geocoder, map);
+			});
+	$("#search").bind('keypress', function(e){
+		if(e.which == 13)
+			geocodeAddress(geocoder, map);
+	});
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmsGI_8BQcslfyf8AnFmSvi0zESELZWOQ&signed_in=true&callback=initMap" async defer></script>
 </body>
 </html>
